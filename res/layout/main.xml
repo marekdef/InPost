@@ -4,10 +4,28 @@
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     >
-<TextView  
-    android:layout_width="fill_parent" 
-    android:layout_height="wrap_content" 
-    android:text="Hello World, SplashScreenActivity"
-    />
+
+    <EditText
+        android:id="@+id/editTextNumber"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:inputType="numberSigned"
+        android:text="900000295100000916048229" >
+
+        <requestFocus></requestFocus>
+    </EditText>
+    <LinearLayout android:id="@+id/linearLayout1" android:layout_width="fill_parent" android:layout_height="wrap_content" android:orientation="horizontal">
+        <Button android:text="@string/find" android:layout_width="wrap_content" android:id="@+id/buttonFind" android:layout_height="wrap_content"></Button>
+        <Button android:text="@string/scan" android:layout_width="wrap_content" android:id="@+id/buttonScan" android:layout_height="wrap_content"></Button>
+    </LinearLayout>
+
+    <android.webkit.WebView
+        android:id="@+id/webView"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:visibility="invisible" >
+
+    </android.webkit.WebView>
+
 </LinearLayout>
 

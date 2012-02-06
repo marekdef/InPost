@@ -7,12 +7,13 @@ import org.jsoup.select.Elements;
 
 public class JSoupParser {
 	public String parse(String inpostPage) {
-		Document parse = Jsoup.parse(inpostPage);
+		Document parse = Jsoup.parse(inpostPage, "utf-8");
 		
 		Elements elementsByAttributeValue = parse.getElementsByAttributeValue("class", "sledz-result contenttable");
 		
 		Element first = elementsByAttributeValue.first();
 		
-		return first.html();
+		first.removeAttr("width");
+		return first.outerHtml();
 	}
 }
