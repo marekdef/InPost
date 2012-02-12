@@ -32,6 +32,9 @@ public class TrackingCheckActivity extends RoboActivity {
 
 	@InjectView(R.id.webView)
 	private WebView webView;
+	
+	@InjectView(R.id.buttonClear)
+	private Button buttonClear;
 
 	@Inject
 	private HttpQuery httpQuery;
@@ -83,6 +86,13 @@ public class TrackingCheckActivity extends RoboActivity {
 				IntentIntegrator integrator = new IntentIntegrator(
 						TrackingCheckActivity.this);
 				integrator.initiateScan();
+			}
+		});
+		
+		buttonClear.setOnClickListener(new OnClickListener() {
+			
+			public void onClick(View v) {
+				editTextNumber.setText("");
 			}
 		});
 	}

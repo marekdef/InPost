@@ -3,4 +3,6 @@
     <string name="app_name">SplashScreenActivity</string>
     <string name="find">Znajdź</string>
     <string name="scan">Skanuj</string>
+    <string name="clean">Wyczyść</string>
+    <string name="example">900000295100000916048229</string>
 </resources>
