@@ -1,4 +1,4 @@
-package net.retsat1.starlab.inpost;
+package net.retsat1.starlab.inpost.exceptions;
 
 public class HttpRequestException extends Exception{
 

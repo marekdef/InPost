@@ -1,5 +1,8 @@
 package net.retsat1.starlab.inpost;
 
+import net.retsat1.starlab.inpost.exceptions.HttpRequestException;
+import net.retsat1.starlab.inpost.exceptions.JSoupParserException;
+
 import com.google.inject.Inject;
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
@@ -35,21 +38,24 @@ public class TrackingCheckActivity extends RoboActivity {
 
 	@Inject
 	private JSoupParser htmlParser;
-	
+
 	private void sendQuery(final String numer_przesylki) {
 		Handler handler = new Handler();
-		
+
 		handler.post(new Runnable() {
 			public void run() {
 				try {
 					String execute = httpQuery.execute(numer_przesylki);
 
 					String parse = htmlParser.parse(execute);
-
 					webView.setVisibility(View.VISIBLE);
-					webView.loadDataWithBaseURL(null, parse,
-							"text/html", "utf-8", null);
+					webView.loadDataWithBaseURL(null, parse, "text/html",
+							"utf-8", null);
+
+				} catch (JSoupParserException e) {
+					webView.setVisibility(View.GONE);
 				} catch (HttpRequestException e) {
+					webView.setVisibility(View.GONE);
 				}
 			}
 		});
@@ -63,8 +69,6 @@ public class TrackingCheckActivity extends RoboActivity {
 		buttonFind.setOnClickListener(new OnClickListener() {
 
 			public void onClick(View v) {
-				// TODO Auto-generated method stub
-
 				final String numer_przesylki = editTextNumber.getText()
 						.toString();
 
@@ -92,6 +96,5 @@ public class TrackingCheckActivity extends RoboActivity {
 			sendQuery(numer_przesylki);
 		}
 	}
-	
-	
+
 }

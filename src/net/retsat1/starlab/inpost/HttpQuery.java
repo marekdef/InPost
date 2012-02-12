@@ -6,6 +6,9 @@ import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
 
+import net.retsat1.starlab.inpost.exceptions.HttpBadStatusCodeException;
+import net.retsat1.starlab.inpost.exceptions.HttpRequestException;
+
 import org.apache.http.HttpResponse;
 import org.apache.http.HttpStatus;
 import org.apache.http.NameValuePair;
@@ -18,14 +21,14 @@ import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.message.BasicNameValuePair;
 
 public class HttpQuery {
-	protected static final String URL = "http://www.inpost.pl/index.php?id=89";
+	protected static final String TRACKING_URL = "http://www.inpost.pl/index.php?id=89";
 
 	public String execute(final String numer_przesylki)
 			throws HttpRequestException {
 		HttpClient httpclient = new DefaultHttpClient();
 		HttpResponse response;
 		try {
-			HttpPost request = new HttpPost(URI.create(URL));
+			HttpPost request = new HttpPost(URI.create(TRACKING_URL));
 			List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>();
 			nameValuePairs.add(new BasicNameValuePair("numer_przesylki", numer_przesylki));
 			request.setEntity(new UrlEncodedFormEntity(nameValuePairs));
@@ -34,7 +37,7 @@ public class HttpQuery {
 			StatusLine statusLine = response.getStatusLine();
 			if (statusLine.getStatusCode() != HttpStatus.SC_OK) {
 
-				// Closes the connection when status is not
+				// Closes the connection when status is not OK
 				response.getEntity().getContent().close();
 				throw new HttpBadStatusCodeException(
 						statusLine.getReasonPhrase());
