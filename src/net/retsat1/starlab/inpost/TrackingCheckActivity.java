@@ -1,12 +1,5 @@
 package net.retsat1.starlab.inpost;
 
-import net.retsat1.starlab.inpost.exceptions.HttpRequestException;
-import net.retsat1.starlab.inpost.exceptions.JSoupParserException;
-
-import com.google.inject.Inject;
-import com.google.zxing.integration.android.IntentIntegrator;
-import com.google.zxing.integration.android.IntentResult;
-
 import roboguice.activity.RoboActivity;
 import roboguice.inject.ContentView;
 import roboguice.inject.InjectView;
@@ -18,6 +11,12 @@ import android.view.View.OnClickListener;
 import android.webkit.WebView;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
+import android.widget.ProgressBar;
+import android.widget.TextView;
+
+import com.google.zxing.integration.android.IntentIntegrator;
+import com.google.zxing.integration.android.IntentResult;
 
 @ContentView(R.layout.main)
 public class TrackingCheckActivity extends RoboActivity {
@@ -32,34 +31,30 @@ public class TrackingCheckActivity extends RoboActivity {
 
 	@InjectView(R.id.webView)
 	private WebView webView;
-	
+
 	@InjectView(R.id.buttonClear)
 	private Button buttonClear;
 
-	@Inject
-	private HttpQuery httpQuery;
+	@InjectView(R.id.progress)
+	public LinearLayout progress;
 
-	@Inject
-	private JSoupParser htmlParser;
+	@InjectView(R.id.progressBar)
+	public ProgressBar progressBar;
+
+	@InjectView(R.id.textProgress)
+	public TextView textViewProgress;
 
 	private void sendQuery(final String numer_przesylki) {
 		Handler handler = new Handler();
 
 		handler.post(new Runnable() {
 			public void run() {
-				try {
-					String execute = httpQuery.execute(numer_przesylki);
-
-					String parse = htmlParser.parse(execute);
-					webView.setVisibility(View.VISIBLE);
-					webView.loadDataWithBaseURL(null, parse, "text/html",
-							"utf-8", null);
-
-				} catch (JSoupParserException e) {
-					webView.setVisibility(View.GONE);
-				} catch (HttpRequestException e) {
-					webView.setVisibility(View.GONE);
-				}
+				String parse = new HttpQuery(TrackingCheckActivity.this)
+						.execute(numer_przesylki);
+				
+				webView.setVisibility(View.VISIBLE);
+				webView.loadDataWithBaseURL(null, parse, "text/html", "utf-8",
+						null);
 			}
 		});
 	}
@@ -88,9 +83,9 @@ public class TrackingCheckActivity extends RoboActivity {
 				integrator.initiateScan();
 			}
 		});
-		
+
 		buttonClear.setOnClickListener(new OnClickListener() {
-			
+
 			public void onClick(View v) {
 				editTextNumber.setText("");
 			}
