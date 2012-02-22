@@ -5,7 +5,6 @@ import roboguice.inject.ContentView;
 import roboguice.inject.InjectView;
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Handler;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.webkit.WebView;
@@ -29,8 +28,8 @@ public class TrackingCheckActivity extends RoboActivity {
 	@InjectView(R.id.editTextNumber)
 	private EditText editTextNumber;
 
-	@InjectView(R.id.webView)
-	private WebView webView;
+	@InjectView(R.id.webView) 
+	public WebView webView;
 
 	@InjectView(R.id.buttonClear)
 	private Button buttonClear;
@@ -45,18 +44,7 @@ public class TrackingCheckActivity extends RoboActivity {
 	public TextView textViewProgress;
 
 	private void sendQuery(final String numer_przesylki) {
-		Handler handler = new Handler();
-
-		handler.post(new Runnable() {
-			public void run() {
-				String parse = new HttpQuery(TrackingCheckActivity.this)
-						.execute(numer_przesylki);
-				
-				webView.setVisibility(View.VISIBLE);
-				webView.loadDataWithBaseURL(null, parse, "text/html", "utf-8",
-						null);
-			}
-		});
+		new HttpQuery(TrackingCheckActivity.this).execute(numer_przesylki);
 	}
 
 	/** Called when the activity is first created. */

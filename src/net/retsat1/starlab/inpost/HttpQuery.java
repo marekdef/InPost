@@ -24,25 +24,24 @@ import com.google.inject.Inject;
 import android.os.AsyncTask;
 import android.view.View;
 
-public class HttpQuery extends AsyncTask<String, String, String>{
+public class HttpQuery extends AsyncTask<String, String, String> {
 	protected static final String TRACKING_URL = "http://www.inpost.pl/index.php?id=89";
 	private TrackingCheckActivity trackingCheckActivity;
-	
-	@Inject
-	private JSoupParser htmlParser;
+
+	private JSoupParser htmlParser = new JSoupParser();
 
 	public HttpQuery(TrackingCheckActivity trackingCheckActivity) {
 		this.trackingCheckActivity = trackingCheckActivity;
 	}
 
-	public String execute(final String numer_przesylki)
-			{
+	private String fetchTrackingInfo(final String numer_przesylki) {
 		HttpClient httpclient = new DefaultHttpClient();
 		HttpResponse response;
 		try {
 			HttpPost request = new HttpPost(URI.create(TRACKING_URL));
 			List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>();
-			nameValuePairs.add(new BasicNameValuePair("numer_przesylki", numer_przesylki));
+			nameValuePairs.add(new BasicNameValuePair("numer_przesylki",
+					numer_przesylki));
 			request.setEntity(new UrlEncodedFormEntity(nameValuePairs));
 
 			response = httpclient.execute(request);
@@ -52,7 +51,7 @@ public class HttpQuery extends AsyncTask<String, String, String>{
 				response.getEntity().getContent().close();
 				return statusLine.getReasonPhrase();
 			}
-			
+
 			String webPage = extractPageAsString(response);
 			String parse = htmlParser.parse(webPage);
 			return parse;
@@ -69,29 +68,29 @@ public class HttpQuery extends AsyncTask<String, String, String>{
 
 	private String extractPageAsString(final HttpResponse response)
 			throws IOException {
-		
-		final long contentLength = response.getEntity().getContentLength();
-		ByteArrayOutputStream out = new ByteArrayOutputStream((int)contentLength) {
+
+		ByteArrayOutputStream out = new ByteArrayOutputStream() {
 			@Override
 			public void write(byte[] buffer) throws IOException {
 				super.write(buffer);
 				publish();
 			}
-			
+
 			@Override
 			public synchronized void write(int oneByte) {
 				super.write(oneByte);
 				publish();
 			}
-			
+
 			@Override
 			public synchronized void write(byte[] buffer, int offset, int len) {
 				super.write(buffer, offset, len);
 				publish();
 			}
-			
+
 			public void publish() {
-				HttpQuery.this.publishProgress(String.format("Read %d/%l bytes", this.size(), contentLength));
+				HttpQuery.this.publishProgress(String.format("Read %d bytes",
+						this.size()));
 			}
 		};
 		response.getEntity().writeTo(out);
@@ -103,23 +102,27 @@ public class HttpQuery extends AsyncTask<String, String, String>{
 	@Override
 	protected String doInBackground(String... params) {
 		String numer_przesylki = params[0];
-		return this.execute(numer_przesylki);
+		return this.fetchTrackingInfo(numer_przesylki);
 	}
-	
+
 	@Override
 	protected void onProgressUpdate(String... values) {
 		trackingCheckActivity.textViewProgress.setText(values[0]);
 	}
-	
+
 	@Override
 	protected void onPreExecute() {
 		trackingCheckActivity.progress.setVisibility(View.VISIBLE);
 		trackingCheckActivity.progressBar.setIndeterminate(true);
 	}
-	
+
 	@Override
 	protected void onPostExecute(String result) {
 		trackingCheckActivity.progress.setVisibility(View.GONE);
 		trackingCheckActivity.progressBar.setIndeterminate(false);
+
+		trackingCheckActivity.webView.setVisibility(View.VISIBLE);
+		trackingCheckActivity.webView.loadDataWithBaseURL(null, result,
+				"text/html", "utf-8", null);
 	}
 }
