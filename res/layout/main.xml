@@ -8,13 +8,13 @@
         android:id="@+id/editTextTrackingNumber"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:inputType="number|numberSigned" >
+        android:inputType="number|numberSigned"
+        android:text="@string/trackingNumber" >
 
         <requestFocus />
     </EditText>
 
     <RelativeLayout
-        android:id="@+id/relativeLayout1"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content" >
 
@@ -41,20 +41,27 @@
             android:layout_alignParentTop="true"
             android:layout_toRightOf="@+id/buttonFind"
             android:text="@string/scan" />
-
     </RelativeLayout>
 
-    <ProgressBar
-        android:id="@+id/progressBar"
-        style="?android:attr/progressBarStyleLarge"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:visibility="gone" />
-
-    <android.webkit.WebView
-        android:id="@+id/webViewStatus"
+    <RelativeLayout
         android:layout_width="fill_parent"
-        android:layout_height="fill_parent" >
-    </android.webkit.WebView>
+        android:layout_height="wrap_content" >
+
+        <ProgressBar
+            android:id="@+id/progressBar"
+            style="?android:attr/progressBarStyleLarge"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true"
+            android:visibility="invisible" />
+
+        <android.webkit.WebView
+            android:id="@+id/webViewStatus"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:visibility="invisible" >
+        </android.webkit.WebView>
+    </RelativeLayout>
 
 </LinearLayout>
