@@ -1,4 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">InPostTracking</string>
+    <string name="find">Znajdź</string>
+    <string name="clear">Wyczyść</string>
+    <string name="scan">Skanuj</string>
 </resources>

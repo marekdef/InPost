@@ -1,13 +1,60 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    >
-<TextView  
-    android:layout_width="fill_parent" 
-    android:layout_height="wrap_content" 
-    android:text="Hello World, InPostTracking"
-    />
-</LinearLayout>
+    android:orientation="vertical" >
 
+    <EditText
+        android:id="@+id/editTextTrackingNumber"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:inputType="number|numberSigned" >
+
+        <requestFocus />
+    </EditText>
+
+    <RelativeLayout
+        android:id="@+id/relativeLayout1"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content" >
+
+        <Button
+            android:id="@+id/buttonFind"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentTop="true"
+            android:text="@string/find" />
+
+        <Button
+            android:id="@+id/buttonScan"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentTop="true"
+            android:text="@string/clear" />
+
+        <Button
+            android:id="@+id/buttonClear"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_toRightOf="@+id/buttonFind"
+            android:text="@string/scan" />
+
+    </RelativeLayout>
+
+    <ProgressBar
+        android:id="@+id/progressBar"
+        style="?android:attr/progressBarStyleLarge"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="gone" />
+
+    <android.webkit.WebView
+        android:id="@+id/webViewStatus"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent" >
+    </android.webkit.WebView>
+
+</LinearLayout>
