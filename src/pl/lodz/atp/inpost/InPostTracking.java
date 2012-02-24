@@ -55,6 +55,7 @@ public class InPostTracking extends Activity {
 
 			@Override
 			public void onClick(View v) {
+				editTextTrackingNumber.setText("");
 			}
 		});
 
