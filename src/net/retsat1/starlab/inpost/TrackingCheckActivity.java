@@ -12,6 +12,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.google.zxing.integration.android.IntentIntegrator;
@@ -35,7 +36,7 @@ public class TrackingCheckActivity extends RoboActivity {
 	private Button buttonClear;
 
 	@InjectView(R.id.progress)
-	public LinearLayout progress;
+	public RelativeLayout progress;
 
 	@InjectView(R.id.progressBar)
 	public ProgressBar progressBar;

@@ -19,8 +19,6 @@ import org.apache.http.client.methods.HttpPost;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.message.BasicNameValuePair;
 
-import com.google.inject.Inject;
-
 import android.os.AsyncTask;
 import android.view.View;
 
