@@ -3,5 +3,8 @@
 
     <string name="hello">Hello World, SplashScreenActivity!</string>
     <string name="app_name">InPostTracking</string>
-
+    <string name="default_number">900000295100000916048432</string>
+    <string name="find">Znajdź</string>
+    <string name="scan">Skanuj</string>
+    <string name="clear">Wyczyść</string>
 </resources>

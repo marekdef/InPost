@@ -10,7 +10,7 @@ public class InPostTracking extends Activity {
 	public void onCreate(Bundle savedInstanceState) {
 	    super.onCreate(savedInstanceState);
 	
-	    // TODO Auto-generated method stub
+	    setContentView(R.layout.track);
 	}
 
 }
