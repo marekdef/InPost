@@ -2,16 +2,16 @@ package pl.lodz.atp.inpost;
 
 import android.app.Activity;
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.LinearLayout;
 import android.widget.ProgressBar;
-import android.widget.RelativeLayout;
 
 public class InPostTracking extends Activity {
 
+	private static final String TEXT_EMPTY = "";
 	private EditText editTextTrackingNumber;
 	private Button buttonFind;
 	private Button buttonScan;
@@ -19,7 +19,8 @@ public class InPostTracking extends Activity {
 	private ProgressBar progressBar;
 	private android.webkit.WebView webViewResult;
 
-	/* Please visit http://www.ryangmattison.com for updates */
+	private HttpParser parser = new HttpParser();
+
 	/** Called when the activity is first created. */
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -38,7 +39,9 @@ public class InPostTracking extends Activity {
 
 			@Override
 			public void onClick(View v) {
-
+				String trackingNumber = editTextTrackingNumber.getText()
+						.toString();
+				sendQuery(trackingNumber);
 			}
 		});
 
@@ -54,9 +57,46 @@ public class InPostTracking extends Activity {
 
 			@Override
 			public void onClick(View v) {
-
+				editTextTrackingNumber.setText(TEXT_EMPTY);
+				progressBar.setVisibility(View.GONE);
+				webViewResult.setVisibility(View.GONE);
 			}
 		});
+	}
+
+	private void sendQuery(final String trackingNumber) {
+		if (trackingNumber == null || trackingNumber.length() == 0)
+			return;
+
+		toggleButtons(false);
+
+		final Handler handler = new Handler();
+
+		new Thread() {
+			public void run() {
+				final String parsedInformation = parser.execute(trackingNumber);
+				handler.post(new Runnable() {
+					@Override
+					public void run() {
+						webViewResult.loadDataWithBaseURL(null,
+								parsedInformation, "text/html", "utf-8", null);
+
+						toggleButtons(true);
+					}
+				});
+			};
+		}.start();
+
+	}
+
+	private void toggleButtons(boolean toggle) {
+		buttonFind.setEnabled(toggle);
+		buttonClear.setEnabled(toggle);
+		buttonScan.setEnabled(toggle);
+
+		progressBar.setVisibility(toggle ? View.GONE : View.VISIBLE);
+		webViewResult.setVisibility(toggle ? View.VISIBLE : View.GONE);
+
 	}
 
 }
