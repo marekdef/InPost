@@ -2,6 +2,7 @@ package pl.lodz.atp.inpost;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.opengl.Visibility;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.View;
@@ -15,6 +16,8 @@ import com.google.zxing.integration.android.IntentResult;
 
 public class InPostTracking extends Activity {
 
+	private static final String WEB_VIEW_RESULT_CONTENT = "webViewResult.content";
+	private static final String WEB_VIEW_RESULT_VISIBILITY = "webViewResult.visibility";
 	private static final String TEXT_EMPTY = "";
 	private EditText editTextTrackingNumber;
 	private Button buttonFind;
@@ -25,6 +28,8 @@ public class InPostTracking extends Activity {
 
 	private HttpParser parser = new HttpParser();
 	private IntentIntegrator intentIntegrator = new IntentIntegrator(this);
+
+	private String parsedInformation = null;
 
 	/** Called when the activity is first created. */
 	@Override
@@ -78,19 +83,24 @@ public class InPostTracking extends Activity {
 
 		new Thread() {
 			public void run() {
-				final String parsedInformation = parser.execute(trackingNumber);
+				parsedInformation = parser.execute(trackingNumber);
 				handler.post(new Runnable() {
 					@Override
 					public void run() {
-						webViewResult.loadDataWithBaseURL(null,
-								parsedInformation, "text/html", "utf-8", null);
+						showResult(parsedInformation);
 
 						toggleButtons(true);
 					}
+
 				});
 			};
 		}.start();
 
+	}
+
+	private void showResult(String parsedInformation) {
+		webViewResult.loadDataWithBaseURL(null, parsedInformation, "text/html",
+				"utf-8", null);
 	}
 
 	private void toggleButtons(boolean toggle) {
@@ -103,7 +113,7 @@ public class InPostTracking extends Activity {
 		webViewResult.setVisibility(toggle ? View.VISIBLE : View.GONE);
 
 	}
-	
+
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 		if (resultCode != Activity.RESULT_OK)
@@ -112,12 +122,32 @@ public class InPostTracking extends Activity {
 		IntentResult scanResult = IntentIntegrator.parseActivityResult(
 				requestCode, resultCode, data);
 
-		if (scanResult == null) 
+		if (scanResult == null)
 			return;
 
 		String numer_przesylki = scanResult.getContents();
 		editTextTrackingNumber.setText(numer_przesylki);
 		sendQuery(numer_przesylki);
+	}
+
+	@Override
+	protected void onSaveInstanceState(Bundle outState) {
+		super.onSaveInstanceState(outState);
+		outState.putInt(WEB_VIEW_RESULT_VISIBILITY,
+				webViewResult.getVisibility());
+		outState.putString(WEB_VIEW_RESULT_CONTENT, parsedInformation);
+	}
+
+	@Override
+	protected void onRestoreInstanceState(Bundle savedInstanceState) {
+		super.onRestoreInstanceState(savedInstanceState);
+
+		parsedInformation = savedInstanceState
+				.getString(WEB_VIEW_RESULT_CONTENT);
+		int visibility = savedInstanceState.getInt(WEB_VIEW_RESULT_VISIBILITY,
+				View.GONE);
+		webViewResult.setVisibility(visibility);
+		showResult(parsedInformation);
 	}
 
 }
