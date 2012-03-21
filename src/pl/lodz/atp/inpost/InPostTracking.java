@@ -1,6 +1,7 @@
 package pl.lodz.atp.inpost;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.View;
@@ -8,6 +9,9 @@ import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ProgressBar;
+
+import com.google.zxing.integration.android.IntentIntegrator;
+import com.google.zxing.integration.android.IntentResult;
 
 public class InPostTracking extends Activity {
 
@@ -20,6 +24,7 @@ public class InPostTracking extends Activity {
 	private android.webkit.WebView webViewResult;
 
 	private HttpParser parser = new HttpParser();
+	private IntentIntegrator intentIntegrator = new IntentIntegrator(this);
 
 	/** Called when the activity is first created. */
 	@Override
@@ -46,10 +51,9 @@ public class InPostTracking extends Activity {
 		});
 
 		buttonScan.setOnClickListener(new OnClickListener() {
-
 			@Override
 			public void onClick(View v) {
-
+				intentIntegrator.initiateScan();
 			}
 		});
 
@@ -93,10 +97,27 @@ public class InPostTracking extends Activity {
 		buttonFind.setEnabled(toggle);
 		buttonClear.setEnabled(toggle);
 		buttonScan.setEnabled(toggle);
+		editTextTrackingNumber.setEnabled(toggle);
 
 		progressBar.setVisibility(toggle ? View.GONE : View.VISIBLE);
 		webViewResult.setVisibility(toggle ? View.VISIBLE : View.GONE);
 
+	}
+	
+	@Override
+	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+		if (resultCode != Activity.RESULT_OK)
+			return;
+
+		IntentResult scanResult = IntentIntegrator.parseActivityResult(
+				requestCode, resultCode, data);
+
+		if (scanResult == null) 
+			return;
+
+		String numer_przesylki = scanResult.getContents();
+		editTextTrackingNumber.setText(numer_przesylki);
+		sendQuery(numer_przesylki);
 	}
 
 }
