@@ -22,19 +22,16 @@ import pl.lodz.atp.inpost.ProgressCallback;
 public class HttpRequest {
 
     private static final int PROCENTAGE = 100;
-
     private static final int CONTENT_LENGHT_NOT_AVALIABLE = -1;
-
     private static final String TAG = HttpRequest.class.getName();
-    
     private final ProgressCallback mCallback;
 
     public HttpRequest(ProgressCallback task) {
         this.mCallback = task;
     }
-
     private static final int IO_BUFFER_SIZE = 4 * 1024;
-    private static final long DEFAULT_PAGE_LEN = 21*1024;
+    private static final long DEFAULT_PAGE_LEN = 21 * 1024;
+
     /**
      * List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(); nameValuePairs.add(new
      * BasicNameValuePair(PARAM_NUMER_PRZESYLKI, numerPrzesylki));
@@ -58,32 +55,34 @@ public class HttpRequest {
         }
         return extractHttpResponseAsString(response);
     }
-    
-    
 
     private String extractHttpResponseAsString( HttpResponse response ) throws IOException {
         ByteArrayOutputStream out = new ByteArrayOutputStream();
         InputStream is = response.getEntity().getContent();
-        long length = response.getEntity().getContentLength();
-        if (length == CONTENT_LENGHT_NOT_AVALIABLE){
-            length = DEFAULT_PAGE_LEN;
-        }
+        long length = checkLength(response);
+        copyStream(out, is, length);
+        String responseString = out.toString();
+        return responseString;
+    }
+
+    private void copyStream( ByteArrayOutputStream out, InputStream is, long length ) throws IOException {
         byte[] buffer = new byte[IO_BUFFER_SIZE];
         int read;
         long sum = 0;
         while ((read = is.read(buffer)) != -1) {
             out.write(buffer, 0, read);
             sum += read;
-            int progress  = (int)((sum*PROCENTAGE)/length);
+            int progress = (int) ((sum * PROCENTAGE) / length);
             Log.d(TAG, "progress of readding length " + length + " sum " + sum + " progress " + progress + "%");
             mCallback.onProgress(progress);
         }
-        
-        String responseString = out.toString();
-        return responseString;
     }
 
-    
-        
-    
+    private long checkLength( HttpResponse response ) {
+        long length = response.getEntity().getContentLength();
+        if (length == CONTENT_LENGHT_NOT_AVALIABLE) {
+            length = DEFAULT_PAGE_LEN;
+        }
+        return length;
+    }
 }
