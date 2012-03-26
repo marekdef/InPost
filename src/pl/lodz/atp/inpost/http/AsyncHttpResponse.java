@@ -6,7 +6,7 @@ public class AsyncHttpResponse<T> {
     private T mResponse;
 
     public boolean isError() {
-        return (mException == null);
+        return (mException != null);
     }
 
     public T getResponse() {
