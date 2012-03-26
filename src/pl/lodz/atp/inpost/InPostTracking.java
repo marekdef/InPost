@@ -78,6 +78,7 @@ public class InPostTracking extends Activity implements ResponseCallback {
             return;
         }
         toggleButtons(false);
+        mProgressBar.setProgress(1);
         new HttpQuery(this).execute(trackingNumber);
     }
 
