@@ -101,6 +101,49 @@
 	</ol>
 </section>
 
+<!-- mario start --> 
+<section class="slide" id="android-architektura">
+	<h2>Android</h2>
+	<img src="system-architecture.jpg" />
+</section>
+<section class="slide" id="basics">
+	<h2>Podstawowe pojęcia</h2>
+	<ul>
+		<li><a href="http://developer.android.com/guide/topics/fundamentals/activities.html">Activities (Aktywności)</a></li>
+		<li><a href="http://developer.android.com/guide/topics/intents/intents-filters.html">Intents (Intencje)</a></li>
+		<li><a href="http://developer.android.com/resources/tutorials/views/index.html">Views (Widoki)</a></li>
+		<li><a href="http://developer.android.com/reference/android/os/Handler.html">Handler</a></li>
+	</ul>
+</section>
+
+<section class="slide" id="activities">
+	<h2>Activity i view</h2>
+        <img src="activities.jpg"/>
+        Activity = screen<br/>
+        view = kontrolka 
+</section>
+
+<section class="slide" id="life">	
+        <h2>lifecycle</h2>
+	<img src="android-activity-lifecycle-diagram.png"/>
+</section>
+
+<section class="slide" id="multithreading">
+	<h2>Wielowątkowość</h2>
+	<p>
+	<a href="http://developer.android.com/guide/practices/design/responsiveness.html">ANR - Application Not Responding</a>
+	</p>
+	<ol>Sposoby na wielowątkowość:
+		<li><a href="http://developer.android.com/reference/java/lang/Thread.html">Thread/Runnable</a>
+		<li><a href="http://developer.android.com/reference/android/os/Handler.html">Handler</a>
+		<li><a href="http://developer.android.com/reference/android/view/View.html#post%28java.lang.Runnable%29">View.post*</a>
+		<li><a href="http://developer.android.com/guide/topics/fundamentals/processes-and-threads.html#AsyncTask">AsyncTask</a>
+	</ol>
+	Więcej: <a href="http://developer.android.com/guide/topics/fundamentals/processes-and-threads.html">Process and Threads</a>
+</section>
+
+
+<!-- mario end --> 
 <section class="slide" id="agenda">
 	<h2>Czego się nauczymy</h2>
 	<ol>
@@ -153,29 +196,6 @@
 	</ul>
 </section>
 
-<section class="slide" id="basics">
-	<h2>Podstawowe pojęcia</h2>
-	<ul>
-		<li><a href="http://developer.android.com/guide/topics/fundamentals/activities.html">Activities (Aktywności)</a></li>
-		<li><a href="http://developer.android.com/guide/topics/intents/intents-filters.html">Intents (Intencje)</a></li>
-		<li><a href="http://developer.android.com/resources/tutorials/views/index.html">Views (Widoki)</a></li>
-		<li><a href="http://developer.android.com/reference/android/os/Handler.html">Handler</a></li>
-	</ul>
-</section>
-
-<section class="slide" id="multithreading">
-	<h2>Wielowątkowość</h2>
-	<p>
-	<a href="http://developer.android.com/guide/practices/design/responsiveness.html">ANR - Application Not Responding</a>
-	</p>
-	<ol>Sposoby na wielowątkowość:
-		<li><a href="http://developer.android.com/reference/java/lang/Thread.html">Thread/Runnable</a>
-		<li><a href="http://developer.android.com/reference/android/os/Handler.html">Handler</a>
-		<li><a href="http://developer.android.com/reference/android/view/View.html#post%28java.lang.Runnable%29">View.post*</a>
-		<li><a href="http://developer.android.com/guide/topics/fundamentals/processes-and-threads.html#AsyncTask">AsyncTask</a>
-	</ol>
-	Więcej: <a href="http://developer.android.com/guide/topics/fundamentals/processes-and-threads.html">Process and Threads</a>
-</section>
 
 <section class="slide" id="acting-as-browser">
 	<h2>Udajemy przeglądarkę:</h2>

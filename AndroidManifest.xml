@@ -7,8 +7,12 @@
     <uses-sdk android:minSdkVersion="7" />
     <uses-permission android:name="android.permission.INTERNET"/>
 
-    <application
-        android:icon="@drawable/parcel"
+    <supports-screens android:resizeable="true"
+		android:smallScreens="true" android:normalScreens="true"
+		android:largeScreens="true" android:anyDensity="true" />
+    
+    
+    <application android:icon="@drawable/parcel"
         android:label="@string/app_name" >
         <activity
             android:name=".SplashScreenActivity"
