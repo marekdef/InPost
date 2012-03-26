@@ -10,7 +10,7 @@
 	<title>Getting Started with deck.js</title>
 	
 	<meta name="description" content="Od zera do bohatera - prosta aplikacja android">
-	<meta name="author" content="Marek Defeciński, Mariusz Saramak" >
+	<meta name="author" content="Marek Defeciński" >
 	<meta name="viewport" content="width=1024, user-scalable=no">
 	
 	<!-- Core and extension CSS files -->
@@ -46,18 +46,48 @@
 	<h1>Od zera do bohatera</h1>
 </section>
 
-<section class="slide" id="mobica">
-	<h2>Mobica</h2>
-	<img src="mobica-logo.jpg" style="float: left; padding: 40px;"/>
-<ul>
-  <li>Health and Pharmaceutical</li>
+<section class="slide" id="autorzy">
+	<h2>Informacje</h2>
+	<ul>Autorzy - progamiści w firmie <a href="www.mobica.com">Mobica</a>
+	<li>Marek Defeciński
+	<li>Mariusz Saramak
+	</ul>
+	<ul>Kod źródłowy - dostępny
+	<li>Github: <a href="https://github.com/marekdef/InPost/"> InPost</a>
+	</li>
+	<li>Branch: <a href="https://github.com/marekdef/InPost/tree/ATP">ATP</a>
+	</li>
+	<li>Android Market:
+		<a href="https://play.google.com/store/apps/details?id=pl.lodz.atp.inpost">InPost Tracker</a>
+	</li>
+	</ul>
+</section>
+
+<section class="slide" id="mobica-projekty" style="background: url(mobica-logo.png); background-repeat: no-repeat; background-position: top right">
+	<h2>Mobica - projekty</h2>
+	<table>
+		<tr>
+		<td>
+		<ul>
+<li>Health and Pharmaceutical</li>
   <li>Aviation, Marine & Defence</li>
+  </ul>
+  </td>
+  <td>&nbsp;</td>
+  </tr>
+  <tr>
+  <td>
+  <ul>
   <li>Media & Publishing</li>
   <li>Telecommunication</li>
   <li>Microsoft Technologies</li>
   <li>STB/TV</li>
-  <li>Automotive/Navigation</li>
-  <li>Web mobile/Web marketing</li>
+	<li>Automotive/Navigation</li>
+	<li>Web mobile/Web marketing</li>
+		</ul>
+		</td>
+		<td>
+<ul>
   <li>Handheld</li>
   <li>Lowlevel/embedded development</li>
   <li>Drivers</li>
@@ -65,11 +95,13 @@
   <li>Banking/Mobile payments</li>
   <li>Testing (including test-automation)</li>
 </ul>
+		</td>
+		</tr>
+	</table>
 </section>
 
-<section class="slide" id="mobica2">
-	<h2>Mobica - współpraca</h2>
-	<img src="mobica-logo.jpg" style="float: left; padding: 40px;"/>
+<section class="slide" id="mobica-klienci"  style="background: url(mobica-logo.png); background-repeat: no-repeat; background-position: top right">
+	<h2>Mobica - klienci</h2>
 <ul>
   <li>Vodafone</li>
   <li>Motorola</li>
@@ -82,7 +114,6 @@
   <li>Ikivo</li>
   <li>Frontier Silicon</li>
 </ul>
-
 </section>
 
 <section class="slide" id="vision-mobile-shipments">
@@ -210,10 +241,10 @@
 <section class="slide" id="start">
 	<h2>Jak wystartować?</h2>
 	<ul>
-		<li class="slide">Java</li>
-		<li class="slide">Eclipse</li>
-		<li class="slide">Android SDK</li>
-		<li class="slide">Eclipse ADT (Android Development Tools)</li>
+		<li><a href="http://www.java.com/en/">Java</a> (1.6)</li>
+		<li><a href="http://www.eclipse.org">Eclipse</a> (helios - 3.7)</li>
+		<li><a href="http://developer.android.com/sdk/index.html">Android SDK</li>
+		<li><a href="">Eclipse ADT (Android Development Tools)</a></li>
 	</ul>
 </section>
 
