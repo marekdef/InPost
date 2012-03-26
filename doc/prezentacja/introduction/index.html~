@@ -46,6 +46,45 @@
 	<h1>Od zera do bohatera</h1>
 </section>
 
+<section class="slide" id="mobica">
+	<h2>Mobica</h2>
+	<img src="mobica-logo.jpg" style="float: left; padding: 40px;"/>
+<ul>
+  <li>Health and Pharmaceutical</li>
+  <li>Aviation, Marine & Defence</li>
+  <li>Media & Publishing</li>
+  <li>Telecommunication</li>
+  <li>Microsoft Technologies</li>
+  <li>STB/TV</li>
+  <li>Automotive/Navigation</li>
+  <li>Web mobile/Web marketing</li>
+  <li>Handheld</li>
+  <li>Lowlevel/embedded development</li>
+  <li>Drivers</li>
+  <li>Wired and Mobile Telecom infrastucture</li>
+  <li>Banking/Mobile payments</li>
+  <li>Testing (including test-automation)</li>
+</ul>
+</section>
+
+<section class="slide" id="mobica2">
+	<h2>Mobica - współpraca</h2>
+	<img src="mobica-logo.jpg" style="float: left; padding: 40px;"/>
+<ul>
+  <li>Vodafone</li>
+  <li>Motorola</li>
+  <li>Sony Ericsson</li>
+  <li>Samsung</li>
+  <li>Imagination Technologies</li>
+  <li>Opera</li>
+  <li>Skype</li>
+  <li>PacketVideo</li>
+  <li>Ikivo</li>
+  <li>Frontier Silicon</li>
+</ul>
+
+</section>
+
 <section class="slide" id="vision-mobile-shipments">
 	<h2>Smartfony 2011 - dostarczone</h2>
 	<img src="vision-mobile-shipments.png"/>
@@ -218,6 +257,8 @@ public class InPostActivity extends Activity {
 	<h2>Life coding:</h2>
 	<ul>
 		<li class="slide">Pokazać eclipse layout</li>
+                <li class="slide">Pokazać splash screen</li>
+                <li class="slide">Pokazać komunikacje z serverem </li>
 	</ul>
 </section>
 
