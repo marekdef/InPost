@@ -14,7 +14,8 @@ import pl.lodz.atp.inpost.ProgressCallback;
 import pl.lodz.atp.inpost.ResponseCallback;
 import pl.lodz.atp.inpost.parser.HttpParser;
 
-public class HttpQuery extends AsyncTask<String, Integer, AsyncHttpResponse<String>> {
+public class HttpQuery extends AsyncTask<String, Integer, AsyncHttpResponse<String>>
+{
 
     private static final String PARAM_NUMER_PRZESYLKI = "numer_przesylki";
     private static final String TRACKING_URL = "http://www.inpost.pl/index.php?id=89";

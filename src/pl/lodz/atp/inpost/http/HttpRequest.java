@@ -19,7 +19,8 @@ import org.apache.http.impl.client.DefaultHttpClient;
 
 import pl.lodz.atp.inpost.ProgressCallback;
 
-public class HttpRequest {
+public class HttpRequest
+{
 
     private static final int PROCENTAGE = 100;
     private static final int CONTENT_LENGHT_NOT_AVALIABLE = -1;
@@ -33,8 +34,8 @@ public class HttpRequest {
     private static final long DEFAULT_PAGE_LEN = 21 * 1024;
 
     /**
-     * List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(); nameValuePairs.add(new
-     * BasicNameValuePair(PARAM_NUMER_PRZESYLKI, numerPrzesylki));
+     * List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>();
+     * nameValuePairs.add(new BasicNameValuePair(PARAM_NUMER_PRZESYLKI, numerPrzesylki));
      * @param url
      * @param nameValuePairs
      * @return
@@ -62,7 +63,7 @@ public class HttpRequest {
         long length = checkLength(response);
         copyStream(out, is, length);
         String responseString = out.toString();
-        Log.d(TAG, "extractHttpResponseAsString() responseString " + responseString); 
+        Log.d(TAG, "extractHttpResponseAsString() responseString " + responseString);
         return responseString;
     }
 

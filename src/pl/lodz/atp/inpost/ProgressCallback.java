@@ -1,7 +1,7 @@
 package pl.lodz.atp.inpost;
 
+public interface ProgressCallback
+{
 
-public interface ProgressCallback {
-    
     void onProgress( int progress );
 }

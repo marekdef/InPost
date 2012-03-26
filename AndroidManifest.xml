@@ -5,30 +5,34 @@
     android:versionName="1.0" >
 
     <uses-sdk android:minSdkVersion="7" />
-    <uses-permission android:name="android.permission.INTERNET"/>
 
-    <supports-screens android:resizeable="true"
-		android:smallScreens="true" android:normalScreens="true"
-		android:largeScreens="true" android:anyDensity="true" />
-    
-    
-    <application android:icon="@drawable/parcel"
+    <uses-permission android:name="android.permission.INTERNET" />
+
+    <supports-screens
+        android:anyDensity="true"
+        android:largeScreens="true"
+        android:normalScreens="true"
+        android:resizeable="true"
+        android:smallScreens="true" />
+
+    <application
+        android:icon="@drawable/parcel"
         android:label="@string/app_name" >
         <activity
+            android:label="@string/app_name"
             android:name=".SplashScreenActivity"
-            android:label="@string/app_name" android:noHistory="true"
-            android:theme="@android:style/Theme.NoTitleBar.Fullscreen"
-            >
-            <intent-filter>
+            android:noHistory="true"
+            android:theme="@android:style/Theme.NoTitleBar.Fullscreen" >
+            <intent-filter >
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
         <activity
+            android:label="@string/app_name"
             android:name="InPostTracking"
-            android:label="@string/app_name" 
-            android:theme="@android:style/Theme.NoTitleBar.Fullscreen"
-            >
+            android:theme="@android:style/Theme.NoTitleBar.Fullscreen" >
         </activity>
     </application>
 

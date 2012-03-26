@@ -16,7 +16,8 @@ import com.google.zxing.integration.android.IntentResult;
 import pl.lodz.atp.inpost.http.HttpQuery;
 import pl.lodz.atp.inpost.utils.Strings;
 
-public class InPostTracking extends Activity implements ResponseCallback {
+public class InPostTracking extends Activity implements ResponseCallback
+{
 
     private static final String WEB_VIEW_RESULT_CONTENT = "webViewResult.content";
     private static final String WEB_VIEW_RESULT_VISIBILITY = "webViewResult.visibility";

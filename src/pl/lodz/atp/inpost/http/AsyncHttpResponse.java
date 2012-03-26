@@ -1,6 +1,7 @@
 package pl.lodz.atp.inpost.http;
 
-public class AsyncHttpResponse<T> {
+public class AsyncHttpResponse<T>
+{
 
     private Exception mException;
     private T mResponse;

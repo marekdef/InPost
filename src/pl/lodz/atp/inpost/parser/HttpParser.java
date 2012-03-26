@@ -5,7 +5,8 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
-public class HttpParser {
+public class HttpParser
+{
 
     private static final String CSS_WIDTH = "width";
     private static final String CSS_CLASS = "class";

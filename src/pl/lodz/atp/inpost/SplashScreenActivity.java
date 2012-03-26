@@ -5,7 +5,8 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 
-public class SplashScreenActivity extends Activity {
+public class SplashScreenActivity extends Activity
+{
 
     private static final int SPLASH_SCREEN_DISPLAY_TIME = 2000;
 
