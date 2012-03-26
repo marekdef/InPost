@@ -21,17 +21,14 @@ public class InPostTracking extends Activity implements ResponseCallback {
     private static final String WEB_VIEW_RESULT_CONTENT = "webViewResult.content";
     private static final String WEB_VIEW_RESULT_VISIBILITY = "webViewResult.visibility";
     private static final String TEXT_EMPTY = "";
-
     private static final String DEFAULT_WEBVIEW_ENCODING = "utf-8";
     private static final String DEFAULT_WEBVIEW_CONTENT = "text/html";
-    
     private EditText mEditTextTrackingNumber;
     private Button mButtonFind;
     private Button mButtonScan;
     private Button mButtonClear;
     private ProgressBar mProgressBar;
     private android.webkit.WebView mWebViewResult;
-
     private String mParsedInformation = null;
     private IntentIntegrator intentIntegrator = new IntentIntegrator(this);
 
@@ -77,13 +74,13 @@ public class InPostTracking extends Activity implements ResponseCallback {
     }
 
     private void sendQuery( final String trackingNumber ) {
-        if (Strings.isEmpty(trackingNumber))
+        if (Strings.isEmpty(trackingNumber)) {
             return;
+        }
         toggleButtons(false);
         new HttpQuery(this).execute(trackingNumber);
     }
 
-   
     private void toggleButtons( boolean toggle ) {
         mButtonFind.setEnabled(toggle);
         mButtonClear.setEnabled(toggle);
@@ -95,11 +92,13 @@ public class InPostTracking extends Activity implements ResponseCallback {
 
     @Override
     protected void onActivityResult( int requestCode, int resultCode, Intent data ) {
-        if (resultCode != Activity.RESULT_OK)
+        if (resultCode != Activity.RESULT_OK) {
             return;
+        }
         IntentResult scanResult = IntentIntegrator.parseActivityResult(requestCode, resultCode, data);
-        if (scanResult == null)
+        if (scanResult == null) {
             return;
+        }
         String numerPrzesylki = scanResult.getContents();
         mEditTextTrackingNumber.setText(numerPrzesylki);
         sendQuery(numerPrzesylki);

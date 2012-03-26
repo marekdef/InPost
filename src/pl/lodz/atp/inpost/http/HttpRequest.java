@@ -62,6 +62,7 @@ public class HttpRequest {
         long length = checkLength(response);
         copyStream(out, is, length);
         String responseString = out.toString();
+        Log.d(TAG, "extractHttpResponseAsString() responseString " + responseString); 
         return responseString;
     }
 

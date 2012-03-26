@@ -58,9 +58,9 @@ public class HttpQuery extends AsyncTask<String, Integer, AsyncHttpResponse<Stri
         return webPage;
     }
 
-    private List<NameValuePair> createParams( final String numer_przesylki ) {
+    private List<NameValuePair> createParams( final String numerPrzesylki ) {
         List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>();
-        nameValuePairs.add(new BasicNameValuePair(PARAM_NUMER_PRZESYLKI, numer_przesylki));
+        nameValuePairs.add(new BasicNameValuePair(PARAM_NUMER_PRZESYLKI, numerPrzesylki));
         return nameValuePairs;
     }
 
