@@ -1,6 +1,10 @@
 package pl.lodz.uni.akademia;
 
+import com.google.zxing.integration.android.IntentIntegrator;
+import com.google.zxing.integration.android.IntentResult;
+
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.View;
@@ -24,6 +28,8 @@ public class InPostTrackerActivity extends Activity {
 	private android.webkit.WebView webViewResult;
 
 	private HttpParser httpParser = new HttpParser();
+	
+	private IntentIntegrator intentIntegrator = new IntentIntegrator(this);
 
 	private Handler handler;
 
@@ -56,6 +62,7 @@ public class InPostTrackerActivity extends Activity {
 
 			@Override
 			public void onClick(View v) {
+				intentIntegrator.initiateScan();
 			}
 		});
 
@@ -71,6 +78,9 @@ public class InPostTrackerActivity extends Activity {
 	}
 
 	private void sendQuery(final String trackingNumber) {
+		if (trackingNumber == null || trackingNumber.length() == 0)
+			return;
+		
 		toggleButtons(false);
 		new Thread() {
 			public void run() {
@@ -102,6 +112,19 @@ public class InPostTrackerActivity extends Activity {
 				null);
 
 		toggleButtons(true);
+	}
+	
+	@Override
+	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+		if (resultCode != Activity.RESULT_OK)
+			return;
+		
+		IntentResult result = IntentIntegrator.parseActivityResult(requestCode, resultCode, data);
+		
+		if (result == null)
+			return;
+		
+		sendQuery(result.getContents());
 	}
 
 }
