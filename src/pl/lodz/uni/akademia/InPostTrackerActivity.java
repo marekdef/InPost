@@ -20,6 +20,9 @@ public class InPostTrackerActivity extends Activity {
 
 	protected static final String EMPTY_TEXT = "";
 
+	private static final String WEB_VIEW_RESULT_CONTENT = "webViewResult.content";
+	private static final String WEB_VIEW_RESULT_VISIBILITY = "webViewResult.visibility";
+
 	private EditText editTextTrackingNumber;
 	private ImageButton imageButtonSearch;
 	private ImageButton imageButtonScan;
@@ -28,10 +31,12 @@ public class InPostTrackerActivity extends Activity {
 	private android.webkit.WebView webViewResult;
 
 	private HttpParser httpParser = new HttpParser();
-	
+
 	private IntentIntegrator intentIntegrator = new IntentIntegrator(this);
 
 	private Handler handler;
+	
+	private String savedTrackResultResult;
 
 	/* Please visit http://www.ryangmattison.com for updates */
 	/** Called when the activity is first created. */
@@ -80,16 +85,16 @@ public class InPostTrackerActivity extends Activity {
 	private void sendQuery(final String trackingNumber) {
 		if (trackingNumber == null || trackingNumber.length() == 0)
 			return;
-		
+
 		toggleButtons(false);
 		new Thread() {
 			public void run() {
-				final String result = httpParser.execute(trackingNumber);
+				savedTrackResultResult = httpParser.execute(trackingNumber);
 				handler.post(new Runnable() {
 
 					@Override
 					public void run() {
-						setTrackResult(result);
+						setTrackResult(savedTrackResultResult);
 					}
 				});
 
@@ -108,23 +113,38 @@ public class InPostTrackerActivity extends Activity {
 
 	private void setTrackResult(final String result) {
 		webViewResult.setVisibility(result != null ? View.VISIBLE : View.GONE);
-		webViewResult.loadDataWithBaseURL(null, result, MIME_TYPE, ENCODING,
-				null);
+		webViewResult.loadDataWithBaseURL(null, result, MIME_TYPE, ENCODING, null);
 
 		toggleButtons(true);
 	}
-	
+
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 		if (resultCode != Activity.RESULT_OK)
 			return;
-		
-		IntentResult result = IntentIntegrator.parseActivityResult(requestCode, resultCode, data);
-		
+
+		IntentResult result = IntentIntegrator.parseActivityResult(requestCode,
+				resultCode, data);
+
 		if (result == null)
 			return;
-		
+
 		sendQuery(result.getContents());
 	}
 
+	@Override
+	protected void onSaveInstanceState(Bundle outState) {
+		super.onSaveInstanceState(outState);
+		outState.putInt(WEB_VIEW_RESULT_VISIBILITY,	webViewResult.getVisibility());
+		outState.putString(WEB_VIEW_RESULT_CONTENT, savedTrackResultResult);
+	}
+
+	@Override
+	protected void onRestoreInstanceState(Bundle savedInstanceState) {
+		super.onRestoreInstanceState(savedInstanceState);
+		savedTrackResultResult = savedInstanceState.getString(WEB_VIEW_RESULT_CONTENT);
+		int visibility = savedInstanceState.getInt(WEB_VIEW_RESULT_VISIBILITY, View.GONE);
+		webViewResult.setVisibility(visibility);
+		setTrackResult(savedTrackResultResult);
+	}
 }
