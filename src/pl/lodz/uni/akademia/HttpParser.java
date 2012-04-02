@@ -15,8 +15,17 @@ import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.message.BasicNameValuePair;
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
+import org.jsoup.select.Elements;
 
 public class HttpParser {
+	private static final String RESULT_ERROR = "sledzenie-error";
+	private static final String RESULT_OK = "sledz-result contenttable";
+	private static final String CSS_WIDTH = "width";
+	private static final String CSS_CLASS_SELECTOR = "class";
+	private static final String ENCODING = "utf-8";
 	private static final String PARAM_NUMER_PRZESYLKI = "numer_przesylki";
 	private static final String TRACKING_URL = "http://www.inpost.pl/index.php?id=89";
 
@@ -31,6 +40,24 @@ public class HttpParser {
 	}
 
 	private String parseHtml(String inpostPage) {
+		Document parse = Jsoup.parse(inpostPage, ENCODING);
+
+		Elements elementsByAttributeValue = parse.getElementsByAttributeValue(
+				CSS_CLASS_SELECTOR, RESULT_OK);
+
+		if (elementsByAttributeValue.size() > 0) {
+			Element first = elementsByAttributeValue.first();
+
+			return first.removeAttr(CSS_WIDTH).outerHtml();
+		}
+
+		elementsByAttributeValue = parse.getElementsByClass(RESULT_ERROR);
+
+		if (elementsByAttributeValue.size() > 0) {
+			Element first = elementsByAttributeValue.first();
+			return first.html();
+		}
+
 		return "Brak informacji";
 	}
 
