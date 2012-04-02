@@ -46,6 +46,9 @@ public class InPostTrackerActivity extends Activity {
 
 			@Override
 			public void onClick(View v) {
+				String trackingNumber = editTextTrackingNumber.getText()
+						.toString();
+				sendQuery(trackingNumber);
 			}
 		});
 
@@ -65,6 +68,23 @@ public class InPostTrackerActivity extends Activity {
 		});
 
 		handler = new Handler();
+	}
+
+	private void sendQuery(final String trackingNumber) {
+		toggleButtons(false);
+		new Thread() {
+			public void run() {
+				final String result = httpParser.execute(trackingNumber);
+				handler.post(new Runnable() {
+
+					@Override
+					public void run() {
+						setTrackResult(result);
+					}
+				});
+
+			};
+		}.start();
 	}
 
 	private void toggleButtons(boolean enabled) {
