@@ -10,7 +10,7 @@ import android.os.Handler;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.EditText;
-import android.widget.ImageButton;
+import android.widget.Button;
 import android.widget.ProgressBar;
 
 public class InPostTrackerActivity extends Activity {
@@ -24,9 +24,9 @@ public class InPostTrackerActivity extends Activity {
 	private static final String WEB_VIEW_RESULT_VISIBILITY = "webViewResult.visibility";
 
 	private EditText editTextTrackingNumber;
-	private ImageButton imageButtonSearch;
-	private ImageButton imageButtonScan;
-	private ImageButton imageButtonClear;
+	private Button buttonSearch;
+	private Button buttonScan;
+	private Button buttonClear;
 	private ProgressBar progressBar;
 	private android.webkit.WebView webViewResult;
 
@@ -38,7 +38,6 @@ public class InPostTrackerActivity extends Activity {
 	
 	private String savedTrackResultResult;
 
-	/* Please visit http://www.ryangmattison.com for updates */
 	/** Called when the activity is first created. */
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -47,13 +46,13 @@ public class InPostTrackerActivity extends Activity {
 		setContentView(R.layout.track);
 
 		editTextTrackingNumber = (EditText) findViewById(R.id.editTextTrackingNumber);
-		imageButtonSearch = (ImageButton) findViewById(R.id.imageButtonSearch);
-		imageButtonScan = (ImageButton) findViewById(R.id.imageButtonScan);
-		imageButtonClear = (ImageButton) findViewById(R.id.imageButtonClear);
+		buttonSearch = (Button) findViewById(R.id.buttonSearch);
+		buttonScan = (Button) findViewById(R.id.buttonScan);
+		buttonClear = (Button) findViewById(R.id.buttonClear);
 		progressBar = (ProgressBar) findViewById(R.id.progressBar);
 		webViewResult = (android.webkit.WebView) findViewById(R.id.webViewResult);
 
-		imageButtonSearch.setOnClickListener(new OnClickListener() {
+		buttonSearch.setOnClickListener(new OnClickListener() {
 
 			@Override
 			public void onClick(View v) {
@@ -63,7 +62,7 @@ public class InPostTrackerActivity extends Activity {
 			}
 		});
 
-		imageButtonScan.setOnClickListener(new OnClickListener() {
+		buttonScan.setOnClickListener(new OnClickListener() {
 
 			@Override
 			public void onClick(View v) {
@@ -71,7 +70,7 @@ public class InPostTrackerActivity extends Activity {
 			}
 		});
 
-		imageButtonClear.setOnClickListener(new OnClickListener() {
+		buttonClear.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
 				editTextTrackingNumber.setText(EMPTY_TEXT);
@@ -104,9 +103,9 @@ public class InPostTrackerActivity extends Activity {
 
 	private void toggleButtons(boolean enabled) {
 		editTextTrackingNumber.setEnabled(enabled);
-		imageButtonClear.setEnabled(enabled);
-		imageButtonScan.setEnabled(enabled);
-		imageButtonSearch.setEnabled(enabled);
+		buttonClear.setEnabled(enabled);
+		buttonScan.setEnabled(enabled);
+		buttonSearch.setEnabled(enabled);
 
 		progressBar.setVisibility(enabled ? View.GONE : View.VISIBLE);
 	}

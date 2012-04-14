@@ -4,5 +4,8 @@
     <string name="hello">Hello World, SplashScreenActivity!</string>
     <string name="app_name">InPostTracker</string>
     <string name="default_numer">900000295100000916048229</string>
+    <string name="search">Search</string>
+    <string name="clear">Clear</string>
+    <string name="scan">Scan</string>
 
 </resources>

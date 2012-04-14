@@ -24,27 +24,30 @@
             android:layout_alignParentLeft="true"
             android:layout_alignParentTop="true" >
 
-            <ImageButton
-                android:id="@+id/imageButtonSearch"
+            <Button
+                android:id="@+id/buttonSearch"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:src="@drawable/search" />
+                android:drawableTop="@drawable/search"
+                android:text="@string/search" />
 
-            <ImageButton
-                android:id="@+id/imageButtonScan"
+            <Button
+                android:id="@+id/buttonScan"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:src="@drawable/barcode" />
+                android:drawableTop="@drawable/barcode"
+                android:text="@string/scan" />
 
         </LinearLayout>
 
-        <ImageButton
-            android:id="@+id/imageButtonClear"
+        <Button
+            android:id="@+id/buttonClear"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
             android:layout_alignParentTop="true"
-            android:src="@drawable/clear" />
+            android:drawableTop="@drawable/clear"
+            android:text="@string/clear" />
 
     </RelativeLayout>
 
