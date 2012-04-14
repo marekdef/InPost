@@ -29,10 +29,10 @@ public class HttpParser {
 	private static final String PARAM_NUMER_PRZESYLKI = "numer_przesylki";
 	private static final String TRACKING_URL = "http://www.inpost.pl/index.php?id=89";
 
-	public String execute(String numer_przesylki) {
+	public String parse(String numerPrzesylki) {
 		String inpostPage;
 		try {
-			inpostPage = extractPageAsString(numer_przesylki);
+			inpostPage = extractPageAsString(numerPrzesylki);
 			return parseHtml(inpostPage);
 		} catch (IOException e) {
 			return e.toString();

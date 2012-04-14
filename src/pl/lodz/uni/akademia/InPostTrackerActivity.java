@@ -88,7 +88,7 @@ public class InPostTrackerActivity extends Activity {
 		toggleButtons(false);
 		new Thread() {
 			public void run() {
-				savedTrackResultResult = httpParser.execute(trackingNumber);
+				savedTrackResultResult = httpParser.parse(trackingNumber);
 				handler.post(new Runnable() {
 
 					@Override
