@@ -35,13 +35,15 @@ public class InPostTrackerActivity extends Activity {
 	private IntentIntegrator intentIntegrator = new IntentIntegrator(this);
 
 	private Handler handler;
-	
+
 	private String savedTrackResultResult;
 
 	/** Called when the activity is first created. */
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+
+		handler = new Handler();
 
 		setContentView(R.layout.track);
 
@@ -61,6 +63,15 @@ public class InPostTrackerActivity extends Activity {
 				sendQuery(trackingNumber);
 			}
 		});
+		
+		buttonSearch.post(new Runnable() {
+
+			@Override
+			public void run() {
+				makeButtonSquare(buttonSearch);
+			}
+		});
+
 
 		buttonScan.setOnClickListener(new OnClickListener() {
 
@@ -69,16 +80,42 @@ public class InPostTrackerActivity extends Activity {
 				intentIntegrator.initiateScan();
 			}
 		});
+		
+		buttonScan.post(new Runnable() {
+			
+			@Override
+			public void run() {
+				makeButtonSquare(buttonScan);
+			}
+		});
 
 		buttonClear.setOnClickListener(new OnClickListener() {
+			
 			@Override
 			public void onClick(View v) {
 				editTextTrackingNumber.setText(EMPTY_TEXT);
 				setTrackResult(null);
 			}
 		});
+		
+		buttonClear.post(new Runnable() {
+			
+			@Override
+			public void run() {
+				makeButtonSquare(buttonClear);
+			}
+		});
+	}
 
-		handler = new Handler();
+	private void makeButtonSquare(Button button) {
+		int width = button.getWidth();
+		int height = button.getHeight();
+
+		if (width == 0 || height == 0)
+			return;
+
+		button.setHeight(width > height ? width : height);
+		button.setWidth(width > height ? width : height);
 	}
 
 	private void sendQuery(final String trackingNumber) {
@@ -112,7 +149,8 @@ public class InPostTrackerActivity extends Activity {
 
 	private void setTrackResult(final String result) {
 		webViewResult.setVisibility(result != null ? View.VISIBLE : View.GONE);
-		webViewResult.loadDataWithBaseURL(null, result, MIME_TYPE, ENCODING, null);
+		webViewResult.loadDataWithBaseURL(null, result, MIME_TYPE, ENCODING,
+				null);
 
 		toggleButtons(true);
 	}
@@ -134,16 +172,20 @@ public class InPostTrackerActivity extends Activity {
 	@Override
 	protected void onSaveInstanceState(Bundle outState) {
 		super.onSaveInstanceState(outState);
-		outState.putInt(WEB_VIEW_RESULT_VISIBILITY,	webViewResult.getVisibility());
+		outState.putInt(WEB_VIEW_RESULT_VISIBILITY,
+				webViewResult.getVisibility());
 		outState.putString(WEB_VIEW_RESULT_CONTENT, savedTrackResultResult);
 	}
 
 	@Override
 	protected void onRestoreInstanceState(Bundle savedInstanceState) {
 		super.onRestoreInstanceState(savedInstanceState);
-		savedTrackResultResult = savedInstanceState.getString(WEB_VIEW_RESULT_CONTENT);
-		int visibility = savedInstanceState.getInt(WEB_VIEW_RESULT_VISIBILITY, View.GONE);
+		savedTrackResultResult = savedInstanceState
+				.getString(WEB_VIEW_RESULT_CONTENT);
+		int visibility = savedInstanceState.getInt(WEB_VIEW_RESULT_VISIBILITY,
+				View.GONE);
 		webViewResult.setVisibility(visibility);
 		setTrackResult(savedTrackResultResult);
 	}
+
 }
