@@ -4,9 +4,12 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
+import android.view.View;
+import android.view.View.OnClickListener;
 
 public class SplashScreenActivity extends Activity {
     private static final long SPLASH_DELAY = 2000;
+	private View imageView;
 
 	/** Called when the activity is first created. */
     @Override
@@ -14,11 +17,25 @@ public class SplashScreenActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main);
         
-        new Handler().postDelayed(new Runnable() {
+        imageView = findViewById(R.id.imageViewSplash);
+        
+        imageView.postDelayed(new Runnable() {
 			@Override
 			public void run() {
-				startActivity(new Intent(getApplicationContext(), InPostTrackerActivity.class));
+				goToTrackerActivity();
 			}
 		}, SPLASH_DELAY);
+        
+        imageView.setOnClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				goToTrackerActivity();
+			}
+		});
     }
+    
+    private void goToTrackerActivity() {
+		startActivity(new Intent(getApplicationContext(), InPostTrackerActivity.class));
+	}
 }
