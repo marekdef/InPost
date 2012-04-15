@@ -82,4 +82,11 @@
     <!-- version-tag: 1 -->
     <import file="${sdk.dir}/tools/ant/build.xml" />
 
+	<target name="fetch-results">
+	    <exec executable="${adb}" failonerror="true" dir="junit-results">
+            <arg value="pull" />
+            <arg value="/data/data/${tested.manifest.package}/files/" />
+        </exec>
+        </target>
+
 </project>
