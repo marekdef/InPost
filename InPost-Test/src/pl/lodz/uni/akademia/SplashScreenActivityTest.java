@@ -35,6 +35,9 @@ public class SplashScreenActivityTest extends ActivityInstrumentationTestCase2<S
     public void testImageView() throws Exception {
     	SplashScreenActivity activity = getActivity();
     	
+    	Instrumentation instrumentation = getInstrumentation();
+    	instrumentation.waitForIdleSync();
+    	
     	View imageView = activity.findViewById(R.id.imageViewSplash);
     	View rootView = imageView.getRootView();
     	
