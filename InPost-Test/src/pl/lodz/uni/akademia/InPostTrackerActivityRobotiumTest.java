@@ -20,7 +20,7 @@ public class InPostTrackerActivityRobotiumTest extends
 		solo = new Solo(getInstrumentation(), getActivity());
 	}
 
-	public void testFlow() {
+	public void testValidFlow() {
 		solo.assertCurrentActivity("Expected inpost tracker", InPostTrackerActivity.class);
 		solo.clickOnButton("Clear");
 		solo.enterText(0, "900000295100000916048230");
@@ -34,4 +34,11 @@ public class InPostTrackerActivityRobotiumTest extends
 		assertEquals(View.GONE, solo.getCurrentProgressBars().get(0).getVisibility());
 	}
 	
+	public void testEmptyString() {
+		solo.assertCurrentActivity("Expected inpost tracker", InPostTrackerActivity.class);
+		solo.clickOnButton("Clear");
+		solo.clickOnButton("Search");
+		
+		assertEquals(View.GONE, solo.getCurrentProgressBars().get(0).getVisibility());
+	}
 }
