@@ -15,7 +15,7 @@
     the package of pl.lodz.uni.akademia.  To run the tests use the command:
     "adb shell am instrument -w pl.lodz.uni.akademia.tests/android.test.InstrumentationTestRunner"
     -->
-    <instrumentation android:name="pl.polidea.instrumentation.PolideaInstrumentationTestRunner"
+    <instrumentation android:name="android.test.InstrumentationTestRunner"
                      android:targetPackage="pl.lodz.uni.akademia"
                      android:label="Tests for pl.lodz.uni.akademia"/>
 </manifest>
