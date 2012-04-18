@@ -21,7 +21,7 @@ public class SplashScreenActivity extends Activity {
         imageView.postDelayed(new Runnable() {
 			@Override
 			public void run() {
-				goToTrackerActivity();
+//				goToTrackerActivity();
 			}
 		}, SPLASH_DELAY);
         
@@ -29,7 +29,7 @@ public class SplashScreenActivity extends Activity {
 			
 			@Override
 			public void onClick(View v) {
-				goToTrackerActivity();
+				//goToTrackerActivity();
 			}
 		});
     }
