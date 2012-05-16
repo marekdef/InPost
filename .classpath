@@ -4,15 +4,15 @@
 	<classpathentry kind="src" path="gen"/>
 	<classpathentry kind="con" path="com.android.ide.eclipse.adt.ANDROID_FRAMEWORK"/>
 	<classpathentry kind="lib" path="libs/guice-2.0-no_aop.jar" sourcepath="/home/marekdef/.m2/repository/com/google/inject/guice/2.0-no_aop/guice-2.0-no_aop-sources.jar"/>
-	<classpathentry kind="lib" path="libs/roboguice-2.0b3.jar" sourcepath="libs/roboguice-2.0b3-sources.jar">
+	<classpathentry kind="lib" path="libs/roboguice-2.0b3.jar" sourcepath="libs-sources/roboguice-2.0b3-sources.jar">
 		<attributes>
-			<attribute name="javadoc_location" value="jar:platform:/resource/SplashScreenActivity/libs/roboguice-2.0b3-javadoc.jar!/"/>
+			<attribute name="javadoc_location" value="jar:platform:/resource/SplashScreenActivity/libs-javadocs/roboguice-2.0b3-javadoc.jar!/"/>
 		</attributes>
 	</classpathentry>
 	<classpathentry kind="lib" path="libs/android-support-v4.jar"/>
-	<classpathentry kind="lib" path="libs/jsoup-1.6.1.jar" sourcepath="libs/jsoup-1.6.1-sources.jar">
+	<classpathentry kind="lib" path="libs/jsoup-1.6.1.jar" sourcepath="libs-sources/jsoup-1.6.1-sources.jar">
 		<attributes>
-			<attribute name="javadoc_location" value="jar:platform:/resource/SplashScreenActivity/libs/jsoup-1.6.1-javadoc.jar!/"/>
+			<attribute name="javadoc_location" value="jar:platform:/resource/SplashScreenActivity/libs-javadocs/jsoup-1.6.1-javadoc.jar!/"/>
 		</attributes>
 	</classpathentry>
 	<classpathentry kind="output" path="bin/classes"/>
