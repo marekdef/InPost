@@ -25,4 +25,12 @@ public class SplashScreenActivityRobotiumTest extends
 		
 		assertTrue(solo.waitForActivity("InPostTrackerActivity", 3000));
 	}
+	
+	public void testTransitsOnClick() {
+		solo.assertCurrentActivity("Expeceted splash", SplashScreenActivity.class);
+		
+		solo.clickOnView(solo.getView(R.id.imageViewSplash));
+		
+		assertTrue(solo.waitForActivity("InPostTrackerActivity", 500));
+	}
 }
