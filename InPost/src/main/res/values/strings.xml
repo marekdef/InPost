@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">SplashScreenActivity</string>
+    <string name="app_name">InPost Tracker</string>
     <string name="find">Znajdź</string>
     <string name="scan">Skanuj</string>
     <string name="clean">Wyczyść</string>

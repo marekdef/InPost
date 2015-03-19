@@ -3,44 +3,41 @@ package net.retsat1.starlab.inpost;
 import net.retsat1.starlab.inpost.exceptions.HttpRequestException;
 import net.retsat1.starlab.inpost.exceptions.JSoupParserException;
 
-import com.google.inject.Inject;
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
 
-import roboguice.activity.RoboActivity;
-import roboguice.inject.ContentView;
-import roboguice.inject.InjectView;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.v7.app.ActionBarActivity;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.webkit.WebView;
 import android.widget.Button;
 import android.widget.EditText;
 
-@ContentView(R.layout.main)
-public class TrackingCheckActivity extends RoboActivity {
+import butterknife.ButterKnife;
+import butterknife.InjectView;
+
+public class TrackingCheckActivity extends ActionBarActivity {
 	@InjectView(R.id.buttonFind)
-	private Button buttonFind;
+	protected Button buttonFind;
 
 	@InjectView(R.id.buttonScan)
-	private Button buttonScan;
+        protected Button buttonScan;
 
 	@InjectView(R.id.editTextNumber)
-	private EditText editTextNumber;
+        protected EditText editTextNumber;
 
 	@InjectView(R.id.webView)
-	private WebView webView;
+        protected WebView webView;
 	
 	@InjectView(R.id.buttonClear)
-	private Button buttonClear;
+        protected Button buttonClear;
 
-	@Inject
-	private HttpQuery httpQuery;
+	private HttpQuery httpQuery = new HttpQuery();
 
-	@Inject
-	private JSoupParser htmlParser;
+	private JSoupParser htmlParser = new JSoupParser();
 
 	private void sendQuery(final String numer_przesylki) {
 		Handler handler = new Handler();
@@ -68,6 +65,10 @@ public class TrackingCheckActivity extends RoboActivity {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+
+                setContentView(R.layout.main);
+
+            ButterKnife.inject(this);
 
 		buttonFind.setOnClickListener(new OnClickListener() {
 
