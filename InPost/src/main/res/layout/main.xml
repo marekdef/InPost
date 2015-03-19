@@ -2,31 +2,54 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical"
     android:layout_width="fill_parent"
-    android:layout_height="fill_parent"
-    >
+    android:layout_height="fill_parent">
 
     <EditText
         android:id="@+id/editTextNumber"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:inputType="numberSigned"
-        android:text="@string/example" >
+        android:text="@string/example">
 
         <requestFocus></requestFocus>
     </EditText>
-    <RelativeLayout android:layout_width="fill_parent" android:layout_height="wrap_content" android:orientation="horizontal">
-        <LinearLayout android:layout_width="fill_parent" android:layout_height="wrap_content" android:orientation="horizontal">
-	        <Button android:text="@string/find" android:layout_width="wrap_content" android:id="@+id/buttonFind" android:layout_height="wrap_content"/>
-	        <Button android:text="@string/scan" android:layout_width="wrap_content" android:id="@+id/buttonScan" android:layout_height="wrap_content"/>
+
+    <RelativeLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <Button
+                android:text="@string/find"
+                android:layout_width="wrap_content"
+                android:id="@+id/buttonFind"
+                android:layout_height="wrap_content" />
+
+            <Button
+                android:text="@string/scan"
+                android:layout_width="wrap_content"
+                android:id="@+id/buttonScan"
+                android:layout_height="wrap_content" />
         </LinearLayout>
-        <Button android:text="@string/clean" android:layout_width="wrap_content" android:id="@+id/buttonClear" android:layout_height="wrap_content" android:layout_alignParentRight="true"/>
+
+        <Button
+            android:text="@string/clean"
+            android:layout_width="wrap_content"
+            android:id="@+id/buttonClear"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true" />
     </RelativeLayout>
 
     <android.webkit.WebView
         android:id="@+id/webView"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
-        android:visibility="invisible" >
+        android:visibility="invisible">
 
     </android.webkit.WebView>
 

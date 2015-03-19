@@ -1,10 +1,10 @@
 package net.retsat1.starlab.inpost;
 
-import net.retsat1.starlab.inpost.exceptions.HttpRequestException;
-import net.retsat1.starlab.inpost.exceptions.JSoupParserException;
-
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
+
+import net.retsat1.starlab.inpost.exceptions.HttpRequestException;
+import net.retsat1.starlab.inpost.exceptions.JSoupParserException;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -20,92 +20,95 @@ import butterknife.ButterKnife;
 import butterknife.InjectView;
 
 public class TrackingCheckActivity extends ActionBarActivity {
-	@InjectView(R.id.buttonFind)
-	protected Button buttonFind;
 
-	@InjectView(R.id.buttonScan)
-        protected Button buttonScan;
+    @InjectView(R.id.buttonFind)
+    protected Button buttonFind;
 
-	@InjectView(R.id.editTextNumber)
-        protected EditText editTextNumber;
+    @InjectView(R.id.buttonScan)
+    protected Button buttonScan;
 
-	@InjectView(R.id.webView)
-        protected WebView webView;
-	
-	@InjectView(R.id.buttonClear)
-        protected Button buttonClear;
+    @InjectView(R.id.editTextNumber)
+    protected EditText editTextNumber;
 
-	private HttpQuery httpQuery = new HttpQuery();
+    @InjectView(R.id.webView)
+    protected WebView webView;
 
-	private JSoupParser htmlParser = new JSoupParser();
+    @InjectView(R.id.buttonClear)
+    protected Button buttonClear;
 
-	private void sendQuery(final String numer_przesylki) {
-		Handler handler = new Handler();
+    private HttpQuery httpQuery = new HttpQuery();
 
-		handler.post(new Runnable() {
-			public void run() {
-				try {
-					String execute = httpQuery.execute(numer_przesylki);
+    private JSoupParser htmlParser = new JSoupParser();
 
-					String parse = htmlParser.parse(execute);
-					webView.setVisibility(View.VISIBLE);
-					webView.loadDataWithBaseURL(null, parse, "text/html",
-							"utf-8", null);
+    private void sendQuery(final String numer_przesylki) {
+        Handler handler = new Handler();
 
-				} catch (JSoupParserException e) {
-					webView.setVisibility(View.GONE);
-				} catch (HttpRequestException e) {
-					webView.setVisibility(View.GONE);
-				}
-			}
-		});
-	}
+        handler.post(new Runnable() {
+            public void run() {
+                try {
+                    String execute = httpQuery.execute(numer_przesylki);
 
-	/** Called when the activity is first created. */
-	@Override
-	public void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
+                    String parse = htmlParser.parse(execute);
+                    webView.setVisibility(View.VISIBLE);
+                    webView.loadDataWithBaseURL(null, parse, "text/html",
+                                                "utf-8", null);
 
-                setContentView(R.layout.main);
+                } catch (JSoupParserException e) {
+                    webView.setVisibility(View.GONE);
+                } catch (HttpRequestException e) {
+                    webView.setVisibility(View.GONE);
+                }
+            }
+        });
+    }
 
-            ButterKnife.inject(this);
+    /**
+     * Called when the activity is first created.
+     */
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
 
-		buttonFind.setOnClickListener(new OnClickListener() {
+        setContentView(R.layout.main);
 
-			public void onClick(View v) {
-				final String numer_przesylki = editTextNumber.getText()
-						.toString();
+        ButterKnife.inject(this);
 
-				sendQuery(numer_przesylki);
+        buttonFind.setOnClickListener(new OnClickListener() {
 
-			}
-		});
+            public void onClick(View v) {
+                final String numer_przesylki = editTextNumber.getText()
+                                                             .toString();
 
-		buttonScan.setOnClickListener(new OnClickListener() {
+                sendQuery(numer_przesylki);
 
-			public void onClick(View v) {
-				IntentIntegrator integrator = new IntentIntegrator(
-						TrackingCheckActivity.this);
-				integrator.initiateScan();
-			}
-		});
-		
-		buttonClear.setOnClickListener(new OnClickListener() {
-			
-			public void onClick(View v) {
-				editTextNumber.setText("");
-			}
-		});
-	}
+            }
+        });
 
-	public void onActivityResult(int requestCode, int resultCode, Intent intent) {
-		IntentResult scanResult = IntentIntegrator.parseActivityResult(
-				requestCode, resultCode, intent);
-		if (scanResult != null) {
-			String numer_przesylki = scanResult.getContents();
-			editTextNumber.setText(numer_przesylki);
-			sendQuery(numer_przesylki);
-		}
-	}
+        buttonScan.setOnClickListener(new OnClickListener() {
+
+            public void onClick(View v) {
+                IntentIntegrator integrator = new IntentIntegrator(
+                        TrackingCheckActivity.this);
+                integrator.initiateScan();
+            }
+        });
+
+        buttonClear.setOnClickListener(new OnClickListener() {
+
+            public void onClick(View v) {
+                editTextNumber.setText("");
+            }
+        });
+    }
+
+    public void onActivityResult(int requestCode, int resultCode, Intent intent) {
+        IntentResult scanResult = IntentIntegrator.parseActivityResult(
+                requestCode, resultCode, intent);
+        if (scanResult != null) {
+            String numer_przesylki = scanResult.getContents();
+            editTextNumber.setText(numer_przesylki);
+            sendQuery(numer_przesylki);
+        }
+    }
 
 }
