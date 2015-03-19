@@ -18,23 +18,14 @@ import android.widget.EditText;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
+import butterknife.OnClick;
 
 public class TrackingCheckActivity extends ActionBarActivity {
-
-    @InjectView(R.id.buttonFind)
-    protected Button buttonFind;
-
-    @InjectView(R.id.buttonScan)
-    protected Button buttonScan;
-
     @InjectView(R.id.editTextNumber)
     protected EditText editTextNumber;
 
     @InjectView(R.id.webView)
     protected WebView webView;
-
-    @InjectView(R.id.buttonClear)
-    protected Button buttonClear;
 
     private HttpQuery httpQuery = new HttpQuery();
 
@@ -72,33 +63,26 @@ public class TrackingCheckActivity extends ActionBarActivity {
         setContentView(R.layout.main);
 
         ButterKnife.inject(this);
+    }
 
-        buttonFind.setOnClickListener(new OnClickListener() {
+    @OnClick(R.id.buttonFind)
+    void trackQuery() {
+        final String numer_przesylki = editTextNumber.getText()
+                                                     .toString();
 
-            public void onClick(View v) {
-                final String numer_przesylki = editTextNumber.getText()
-                                                             .toString();
+        sendQuery(numer_przesylki);
+    }
 
-                sendQuery(numer_przesylki);
+    @OnClick(R.id.buttonScan)
+    void launchScan() {
+        IntentIntegrator integrator = new IntentIntegrator(
+                this);
+        integrator.initiateScan();
+    }
 
-            }
-        });
-
-        buttonScan.setOnClickListener(new OnClickListener() {
-
-            public void onClick(View v) {
-                IntentIntegrator integrator = new IntentIntegrator(
-                        TrackingCheckActivity.this);
-                integrator.initiateScan();
-            }
-        });
-
-        buttonClear.setOnClickListener(new OnClickListener() {
-
-            public void onClick(View v) {
-                editTextNumber.setText("");
-            }
-        });
+    @OnClick(R.id.buttonClear)
+    void clearEntry() {
+        editTextNumber.setText("");
     }
 
     public void onActivityResult(int requestCode, int resultCode, Intent intent) {
