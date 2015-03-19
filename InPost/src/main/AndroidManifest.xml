@@ -5,14 +5,13 @@
       android:versionName="1.0">
     <uses-sdk android:minSdkVersion="7"></uses-sdk>
     <uses-permission android:name="android.permission.INTERNET"/>
-    <application android:label="@string/app_name" android:icon="@drawable/icon">
-        <activity android:name="SplashScreenActivity"
+    <application android:label="@string/app_name" android:icon="@drawable/icon" android:theme="@style/Theme.AppCompat">
+        <activity android:name=".TrackingCheckActivity"
                   android:label="@string/app_name">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name="TrackingCheckActivity"></activity>
     </application>
 </manifest> 
