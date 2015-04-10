@@ -3,17 +3,15 @@ package net.retsat1.starlab.inpost;
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
 
-import net.retsat1.starlab.inpost.exceptions.HttpRequestException;
-import net.retsat1.starlab.inpost.exceptions.JSoupParserException;
-
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
-import android.os.Handler;
+import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.app.ActionBarActivity;
 import android.view.View;
-import android.view.View.OnClickListener;
 import android.webkit.WebView;
-import android.widget.Button;
 import android.widget.EditText;
 
 import butterknife.ButterKnife;
@@ -21,37 +19,20 @@ import butterknife.InjectView;
 import butterknife.OnClick;
 
 public class TrackingCheckActivity extends ActionBarActivity {
+
+    public static final String RESULT = "RESULT";
+
+    public static final String ACTION_RESULT = "net.retsat1.starlab.inpost.result.OK";
+
     @InjectView(R.id.editTextNumber)
     protected EditText editTextNumber;
 
     @InjectView(R.id.webView)
     protected WebView webView;
 
-    private HttpQuery httpQuery = new HttpQuery();
+    private IntentFilter mIntentFilter = new IntentFilter(ACTION_RESULT);
 
-    private JSoupParser htmlParser = new JSoupParser();
-
-    private void sendQuery(final String numer_przesylki) {
-        Handler handler = new Handler();
-
-        handler.post(new Runnable() {
-            public void run() {
-                try {
-                    String execute = httpQuery.execute(numer_przesylki);
-
-                    String parse = htmlParser.parse(execute);
-                    webView.setVisibility(View.VISIBLE);
-                    webView.loadDataWithBaseURL(null, parse, "text/html",
-                                                "utf-8", null);
-
-                } catch (JSoupParserException e) {
-                    webView.setVisibility(View.GONE);
-                } catch (HttpRequestException e) {
-                    webView.setVisibility(View.GONE);
-                }
-            }
-        });
-    }
+    private BroadcastReceiver mBroadcastReceiver;
 
     /**
      * Called when the activity is first created.
@@ -63,6 +44,33 @@ public class TrackingCheckActivity extends ActionBarActivity {
         setContentView(R.layout.main);
 
         ButterKnife.inject(this);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        mBroadcastReceiver = new BroadcastReceiver() {
+            @Override
+            public void onReceive(final Context context, final Intent intent) {
+                if (ACTION_RESULT.equals(intent.getAction())) {
+                    webView.setVisibility(View.VISIBLE);
+                    final String parse = intent.getStringExtra(RESULT);
+
+                    webView.loadDataWithBaseURL(null, parse, "text/html",
+                                                "utf-8", null);
+                }
+            }
+        };
+
+        LocalBroadcastManager.getInstance(this).registerReceiver(mBroadcastReceiver, mIntentFilter);
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+
+        LocalBroadcastManager.getInstance(this).unregisterReceiver(mBroadcastReceiver);
     }
 
     @OnClick(R.id.buttonFind)
@@ -93,6 +101,10 @@ public class TrackingCheckActivity extends ActionBarActivity {
             editTextNumber.setText(numer_przesylki);
             sendQuery(numer_przesylki);
         }
+    }
+
+    private void sendQuery(final String numer_przesylki) {
+        QueryService.startActionFoo(this, numer_przesylki);
     }
 
 }
