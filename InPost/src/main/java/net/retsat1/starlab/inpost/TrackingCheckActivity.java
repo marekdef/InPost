@@ -1,5 +1,6 @@
 package net.retsat1.starlab.inpost;
 
+import com.crashlytics.android.Crashlytics;
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
 
@@ -17,6 +18,7 @@ import android.widget.EditText;
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 import butterknife.OnClick;
+import io.fabric.sdk.android.Fabric;
 
 public class TrackingCheckActivity extends ActionBarActivity {
 
@@ -40,6 +42,7 @@ public class TrackingCheckActivity extends ActionBarActivity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Fabric.with(this, new Crashlytics());
 
         setContentView(R.layout.main);
 

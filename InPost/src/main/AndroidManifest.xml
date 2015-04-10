@@ -35,6 +35,9 @@
             android:name=".QueryService"
             android:exported="false" >
         </service>
+        <meta-data
+            android:name="io.fabric.ApiKey"
+            android:value="796330efae7e08425542d2b86f38be53359a4cd9" />
     </application>
 
 </manifest>
