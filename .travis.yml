@@ -27,4 +27,5 @@ before_script:
   - emulator -avd test -no-skin -no-audio -no-window &
   - ./gradlew build
   - android-wait-for-emulator
+  - adb logcat -d
   - adb shell input keyevent 82 &
