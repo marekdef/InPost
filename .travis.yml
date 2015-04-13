@@ -31,3 +31,4 @@ before_script:
   - adb logcat -d
 
 after_script:
+  - adb logcat -d
