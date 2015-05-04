@@ -12,19 +12,23 @@ public class JSoupParser {
     public String parse(String inpostPage) throws JSoupParserException {
         Document parse = Jsoup.parse(inpostPage, "utf-8");
 
-        Elements elementsByAttributeValue = parse.getElementsByAttributeValue("class", "sledz-result contenttable");
+        Elements elementsByAttributeValue = parse.getElementsByAttributeValue("class", "current-status important");
 
         if (elementsByAttributeValue.size() > 0) {
-            Element first = elementsByAttributeValue.first();
+            Element currentStatusImportant = elementsByAttributeValue.first();
 
-            return first.removeAttr("width").outerHtml();
+            Elements h3s = currentStatusImportant.getElementsByTag("h3");
+
+            if(h3s.size() > 0) {
+                return h3s.first().html();
+            }
         }
 
-        elementsByAttributeValue = parse.getElementsByClass("sledzenie-error");
+        elementsByAttributeValue = parse.getElementsByClass("system-error");
 
         if (elementsByAttributeValue.size() > 0) {
-            Element first = elementsByAttributeValue.first();
-            return first.html();
+            Element systemError = elementsByAttributeValue.first();
+            return systemError.child(0).    html();
         }
 
         throw new JSoupParserException("Nie mogę odczytać odpowiedzi");
