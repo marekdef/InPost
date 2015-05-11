@@ -7,6 +7,7 @@ import android.support.v7.app.ActionBarActivity;
 import android.view.View;
 import android.webkit.WebView;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 
 import com.crashlytics.android.Crashlytics;
 import com.google.zxing.integration.android.IntentIntegrator;
@@ -23,6 +24,9 @@ public class TrackingCheckActivity extends ActionBarActivity implements Tracking
 
     @InjectView(R.id.webView)
     protected WebView webView;
+
+    @InjectView(R.id.progressBar)
+    protected ProgressBar progressBar;
 
     private BroadcastReceiver mBroadcastReceiver;
 
@@ -84,11 +88,14 @@ public class TrackingCheckActivity extends ActionBarActivity implements Tracking
     }
 
     private void sendQuery(final String numer_przesylki) {
+        progressBar.setVisibility(View.VISIBLE);
+        webView.setVisibility(View.GONE);
         trackingService.checkTracking(numer_przesylki, this);
     }
 
     @Override
     public void onResult(String result) {
+        progressBar.setVisibility(View.GONE);
         webView.setVisibility(View.VISIBLE);
 
         webView.loadDataWithBaseURL(null, result, "text/html",
@@ -97,9 +104,10 @@ public class TrackingCheckActivity extends ActionBarActivity implements Tracking
 
     @Override
     public void onError(Exception e) {
+        progressBar.setVisibility(View.GONE);
         webView.setVisibility(View.VISIBLE);
 
-        webView.loadDataWithBaseURL(null, e.toString(), "text/plain",
+        webView.loadDataWithBaseURL(null, e.getMessage(), "text/plain",
                 "utf-8", null);
     }
 }

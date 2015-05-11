@@ -17,7 +17,7 @@ import net.retsat1.starlab.inpost.exceptions.TimeoutException;
 public class QueryService extends IntentService {
 
     public static final String RESULT = "result";
-    private static final long TIMEOUT = 1000;
+    private static final long TIMEOUT = 10_000;
 
     private HttpQuery httpQuery = new HttpQuery();
 
@@ -98,7 +98,6 @@ public class QueryService extends IntentService {
             intent.putExtra(RESULT, parse);
             LocalBroadcastManager.getInstance(this).sendBroadcast(intent);
         } catch (JSoupParserException | HttpRequestException e) {
-
             Intent intent = new Intent(ACTION_FAILURE);
             intent.putExtra(RESULT, e);
             LocalBroadcastManager.getInstance(this).sendBroadcast(intent);

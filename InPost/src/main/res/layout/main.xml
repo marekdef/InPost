@@ -11,30 +11,49 @@
         android:inputType="numberSigned"
         android:text="@string/example">
 
-        <requestFocus></requestFocus>
+        <requestFocus/>
     </EditText>
 
     <RelativeLayout
         android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
+        android:layout_height="wrap_content">
+
+        <Button
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:text="@string/find"
+            android:layout_width="wrap_content"
+            android:id="@+id/buttonFind"
+            android:layout_height="wrap_content" />
+
+        <Button
+            android:text="@string/scan"
+            android:layout_width="wrap_content"
+            android:id="@+id/buttonScan"
+            android:layout_height="wrap_content"
+            android:layout_toEndOf="@id/buttonFind"
+            android:layout_toRightOf="@id/buttonFind"
+            />
+
 
         <LinearLayout
-            android:layout_width="fill_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            android:layout_toRightOf="@id/buttonScan"
+            android:layout_toEndOf="@id/buttonScan"
+            android:layout_toLeftOf="@+id/buttonClear"
+            android:layout_toStartOf="@+id/buttonClear">
 
-            <Button
-                android:text="@string/find"
-                android:layout_width="wrap_content"
-                android:id="@+id/buttonFind"
-                android:layout_height="wrap_content" />
 
-            <Button
-                android:text="@string/scan"
-                android:layout_width="wrap_content"
-                android:id="@+id/buttonScan"
-                android:layout_height="wrap_content" />
+            <ProgressBar
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/progressBar"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:visibility="gone"/>
+
         </LinearLayout>
 
         <Button
@@ -42,13 +61,15 @@
             android:layout_width="wrap_content"
             android:id="@+id/buttonClear"
             android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
             android:layout_alignParentRight="true" />
     </RelativeLayout>
+
 
     <android.webkit.WebView
         android:id="@+id/webView"
         android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
+        android:layout_height="match_parent"
         android:visibility="invisible">
 
     </android.webkit.WebView>

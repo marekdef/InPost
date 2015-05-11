@@ -9,10 +9,18 @@ import org.jsoup.select.Elements;
 
 public class JSoupParser {
 
-    public String parse(String inpostPage) throws JSoupParserException {
-        Document parse = Jsoup.parse(inpostPage, "utf-8");
+    public static final String UTF_8_ENCODING = "utf-8";
 
-        Elements elementsByAttributeValue = parse.getElementsByAttributeValue("class", "current-status important");
+    public static final String ATTRIBUTE_CLASS = "class";
+
+    public static final String SYSTEM_ERROR_CLASS = "system-error";
+
+    public static final String CURRENT_STATUS_IMPORTANT = "current-status important";
+
+    public String parse(String inpostPage) throws JSoupParserException {
+        Document parse = Jsoup.parse(inpostPage, UTF_8_ENCODING);
+
+        Elements elementsByAttributeValue = parse.getElementsByAttributeValue(ATTRIBUTE_CLASS, CURRENT_STATUS_IMPORTANT);
 
         if (elementsByAttributeValue.size() > 0) {
             Element currentStatusImportant = elementsByAttributeValue.first();
@@ -24,13 +32,13 @@ public class JSoupParser {
             }
         }
 
-        elementsByAttributeValue = parse.getElementsByClass("system-error");
+        elementsByAttributeValue = parse.getElementsByClass(SYSTEM_ERROR_CLASS);
 
         if (elementsByAttributeValue.size() > 0) {
             Element systemError = elementsByAttributeValue.first();
-            return systemError.child(0).    html();
+            return systemError.child(0).html();
         }
 
-        throw new JSoupParserException("Nie mogę odczytać odpowiedzi");
+        throw new JSoupParserException();
     }
 }

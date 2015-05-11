@@ -5,4 +5,5 @@
     <string name="scan">Skanuj</string>
     <string name="clean">Wyczyść</string>
     <string name="example">667100119590212019991295</string>
+    <string name="timeout_exceeded">Przekroczono czas oczekiwania na odpowiedż serwera</string>
 </resources>
