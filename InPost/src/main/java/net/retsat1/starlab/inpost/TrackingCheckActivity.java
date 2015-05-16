@@ -4,14 +4,20 @@ import android.content.BroadcastReceiver;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
+import android.text.Html;
 import android.view.View;
 import android.webkit.WebView;
 import android.widget.EditText;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 
 import com.crashlytics.android.Crashlytics;
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
+
+import org.apache.commons.io.IOUtils;
+
+import java.io.IOException;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
@@ -27,6 +33,9 @@ public class TrackingCheckActivity extends ActionBarActivity implements Tracking
 
     @InjectView(R.id.progressBar)
     protected ProgressBar progressBar;
+
+    @InjectView(R.id.textViewHistory)
+    protected TextView history;
 
     private BroadcastReceiver mBroadcastReceiver;
 
@@ -45,6 +54,12 @@ public class TrackingCheckActivity extends ActionBarActivity implements Tracking
         ButterKnife.inject(this);
 
         trackingService = new ServiceBacked(getApplicationContext());
+
+        try {
+            history.setText(Html.fromHtml(IOUtils.toString(getResources().openRawResource(R.raw.history))));
+        } catch (IOException ignore) {
+
+        }
     }
 
     @Override

@@ -1,18 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical"
     android:layout_width="fill_parent"
-    android:layout_height="fill_parent">
+    android:layout_height="fill_parent"
+    android:orientation="vertical">
 
     <EditText
         android:id="@+id/editTextNumber"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
+        android:hint="@string/hint"
         android:inputType="numberSigned"
-        android:text="@string/example"
-        android:hint="@string/hint">
+        android:text="@string/example">
 
-        <requestFocus/>
+        <requestFocus />
     </EditText>
 
     <RelativeLayout
@@ -20,50 +20,49 @@
         android:layout_height="wrap_content">
 
         <Button
+            android:id="@+id/buttonFind"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true"
-            android:text="@string/find"
-            android:layout_width="wrap_content"
-            android:id="@+id/buttonFind"
-            android:layout_height="wrap_content" />
+            android:text="@string/find" />
 
         <Button
-            android:text="@string/scan"
-            android:layout_width="wrap_content"
             android:id="@+id/buttonScan"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_toEndOf="@id/buttonFind"
             android:layout_toRightOf="@id/buttonFind"
-            />
+            android:text="@string/scan" />
 
 
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:layout_toRightOf="@id/buttonScan"
             android:layout_toEndOf="@id/buttonScan"
             android:layout_toLeftOf="@+id/buttonClear"
-            android:layout_toStartOf="@+id/buttonClear">
+            android:layout_toRightOf="@id/buttonScan"
+            android:layout_toStartOf="@+id/buttonClear"
+            android:orientation="horizontal">
 
 
             <ProgressBar
+                android:id="@+id/progressBar"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:id="@+id/progressBar"
                 android:layout_gravity="center"
                 android:gravity="center"
-                android:visibility="gone"/>
+                android:visibility="gone" />
 
         </LinearLayout>
 
         <Button
-            android:text="@string/clean"
-            android:layout_width="wrap_content"
             android:id="@+id/buttonClear"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentEnd="true"
-            android:layout_alignParentRight="true" />
+            android:layout_alignParentRight="true"
+            android:text="@string/clean" />
     </RelativeLayout>
 
 
@@ -74,6 +73,17 @@
         android:visibility="invisible">
 
     </android.webkit.WebView>
+
+    <ScrollView
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent">
+
+        <TextView
+            android:id="@+id/textViewHistory"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:text="" />
+    </ScrollView>
 
 </LinearLayout>
 
