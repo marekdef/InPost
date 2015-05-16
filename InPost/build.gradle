@@ -28,7 +28,7 @@ android {
     buildToolsVersion "21.1.2"
 
     defaultConfig {
-        applicationId "net.retsat1.starlab.inpost"
+        applicationId "pl.lodz.atp.inpost"
         minSdkVersion 8
         targetSdkVersion 21
         versionCode 2
