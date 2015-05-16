@@ -9,7 +9,8 @@
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:inputType="numberSigned"
-        android:text="@string/example">
+        android:text="@string/example"
+        android:hint="@string/hint">
 
         <requestFocus/>
     </EditText>

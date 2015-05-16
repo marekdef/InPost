@@ -4,6 +4,7 @@
     <string name="find">Znajdź</string>
     <string name="scan">Skanuj</string>
     <string name="clean">Wyczyść</string>
-    <string name="example">667100119590212019991295</string>
+    <string name="example"></string>
     <string name="timeout_exceeded">Przekroczono czas oczekiwania na odpowiedż serwera</string>
+    <string name="hint">Wpisz lub zeskanuj numer paczki</string>
 </resources>
