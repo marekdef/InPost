@@ -31,12 +31,6 @@ public class HttpQuery {
                 throw new HttpBadStatusCodeException(String.valueOf(statusLine));
             }
 
-            try {
-                Thread.sleep(5000);
-            } catch (InterruptedException e) {
-                
-            }
-
             return extractPageAsString(connection.getInputStream());
 
         } catch (IOException e) {
