@@ -31,8 +31,8 @@ android {
         applicationId "net.retsat1.starlab.inpost"
         minSdkVersion 8
         targetSdkVersion 21
-        versionCode 1
-        versionName getVersionName()
+        versionCode 2
+        versionName 2.0 + "-" + getVersionName()
     }
     buildTypes {
         release {
