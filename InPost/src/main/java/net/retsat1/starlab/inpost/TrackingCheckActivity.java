@@ -5,13 +5,19 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.text.Html;
+import android.text.TextUtils;
+import android.view.MotionEvent;
 import android.view.View;
 import android.webkit.WebView;
 import android.widget.EditText;
 import android.widget.ProgressBar;
+import android.widget.ScrollView;
 import android.widget.TextView;
 
 import com.crashlytics.android.Crashlytics;
+import com.nineoldandroids.animation.Animator;
+import com.nineoldandroids.view.ViewPropertyAnimator;
+
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
 
@@ -25,6 +31,12 @@ import butterknife.OnClick;
 import io.fabric.sdk.android.Fabric;
 
 public class TrackingCheckActivity extends ActionBarActivity implements TrackingService.Callback {
+
+    public static final String TEXT_HTML = "text/html";
+    public static final String TEXT_PLAIN = "text/plain";
+
+    public static final String ENCODING = "utf-8";
+
     @InjectView(R.id.editTextNumber)
     protected EditText editTextNumber;
 
@@ -36,6 +48,9 @@ public class TrackingCheckActivity extends ActionBarActivity implements Tracking
 
     @InjectView(R.id.textViewHistory)
     protected TextView history;
+
+    @InjectView(R.id.scrollView)
+    protected ScrollView scrollView;
 
     private BroadcastReceiver mBroadcastReceiver;
 
@@ -103,6 +118,38 @@ public class TrackingCheckActivity extends ActionBarActivity implements Tracking
     }
 
     private void sendQuery(final String numer_przesylki) {
+        if(TextUtils.isEmpty(numer_przesylki))
+            return;
+
+        ViewPropertyAnimator.animate(scrollView).alpha(0.0f).setDuration(3000).setListener(new Animator.AnimatorListener() {
+            @Override
+            public void onAnimationStart(Animator animation) {
+                scrollView.setOnTouchListener(new View.OnTouchListener() {
+                    @Override
+                    public boolean onTouch(View v, MotionEvent event) {
+                        return true;
+                    }
+                });
+
+            }
+
+            @Override
+            public void onAnimationEnd(Animator animation) {
+                scrollView.setVisibility(View.GONE);
+            }
+
+            @Override
+            public void onAnimationCancel(Animator animation) {
+
+            }
+
+            @Override
+            public void onAnimationRepeat(Animator animation) {
+
+            }
+        }).start();
+
+
         progressBar.setVisibility(View.VISIBLE);
         webView.setVisibility(View.GONE);
         trackingService.checkTracking(numer_przesylki, this);
@@ -113,8 +160,8 @@ public class TrackingCheckActivity extends ActionBarActivity implements Tracking
         progressBar.setVisibility(View.GONE);
         webView.setVisibility(View.VISIBLE);
 
-        webView.loadDataWithBaseURL(null, result, "text/html",
-                "utf-8", null);
+        webView.loadDataWithBaseURL(null, result, TEXT_HTML,
+                                    ENCODING, null);
     }
 
     @Override
@@ -122,7 +169,7 @@ public class TrackingCheckActivity extends ActionBarActivity implements Tracking
         progressBar.setVisibility(View.GONE);
         webView.setVisibility(View.VISIBLE);
 
-        webView.loadDataWithBaseURL(null, e.getMessage(), "text/plain",
-                "utf-8", null);
+        webView.loadDataWithBaseURL(null, e.getMessage(), TEXT_PLAIN,
+                ENCODING, null);
     }
 }

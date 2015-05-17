@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
-    android:layout_height="fill_parent"
-    android:orientation="vertical">
+    android:layout_height="fill_parent">
 
     <EditText
         android:id="@+id/editTextNumber"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
         android:hint="@string/hint"
         android:inputType="numberSigned"
         android:text="@string/example">
@@ -16,8 +16,10 @@
     </EditText>
 
     <RelativeLayout
+        android:id="@+id/buttonContainer"
         android:layout_width="fill_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:layout_below="@id/editTextNumber">
 
         <Button
             android:id="@+id/buttonFind"
@@ -70,20 +72,28 @@
         android:id="@+id/webView"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
+        android:layout_below="@id/buttonContainer"
         android:visibility="invisible">
 
     </android.webkit.WebView>
 
+
     <ScrollView
+        android:id="@+id/scrollView"
         android:layout_width="fill_parent"
-        android:layout_height="fill_parent">
+        android:layout_height="fill_parent"
+        android:layout_below="@id/webView"
+        android:layout_alignParentBottom="true"
+        android:descendantFocusability="afterDescendants">
 
         <TextView
             android:id="@+id/textViewHistory"
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
+            android:gravity="bottom"
             android:text="" />
     </ScrollView>
 
-</LinearLayout>
+
+</RelativeLayout>
 
