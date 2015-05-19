@@ -1,6 +1,5 @@
 package net.retsat1.starlab.inpost;
 
-import android.content.BroadcastReceiver;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
@@ -15,22 +14,24 @@ import android.widget.ScrollView;
 import android.widget.TextView;
 
 import com.crashlytics.android.Crashlytics;
-import com.nineoldandroids.animation.Animator;
-import com.nineoldandroids.view.ViewPropertyAnimator;
-
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
+import com.nineoldandroids.animation.Animator;
+import com.nineoldandroids.view.ViewPropertyAnimator;
 
 import org.apache.commons.io.IOUtils;
 
 import java.io.IOException;
 
+import javax.inject.Inject;
+
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 import butterknife.OnClick;
 import io.fabric.sdk.android.Fabric;
+import rx.functions.Action1;
 
-public class TrackingCheckActivity extends ActionBarActivity implements TrackingService.Callback {
+public class TrackingCheckActivity extends ActionBarActivity {
 
     public static final String TEXT_HTML = "text/html";
     public static final String TEXT_PLAIN = "text/plain";
@@ -52,9 +53,8 @@ public class TrackingCheckActivity extends ActionBarActivity implements Tracking
     @InjectView(R.id.scrollView)
     protected ScrollView scrollView;
 
-    private BroadcastReceiver mBroadcastReceiver;
-
-    private TrackingService trackingService;
+    @Inject
+    protected TrackingService trackingService;
 
     /**
      * Called when the activity is first created.
@@ -62,13 +62,15 @@ public class TrackingCheckActivity extends ActionBarActivity implements Tracking
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        InPostApplication.injector(this).inject(this);
+
+
         Fabric.with(this, new Crashlytics());
 
         setContentView(R.layout.main);
 
         ButterKnife.inject(this);
-
-        trackingService = new ServiceBacked(getApplicationContext());
 
         try {
             history.setText(Html.fromHtml(IOUtils.toString(getResources().openRawResource(R.raw.history))));
@@ -80,6 +82,19 @@ public class TrackingCheckActivity extends ActionBarActivity implements Tracking
     @Override
     protected void onResume() {
         super.onResume();
+
+        trackingService.getObservable().subscribe(new Action1<TrackingService.Result>() {
+            @Override
+            public void call(TrackingService.Result result) {
+                onResult(result.result);
+            }
+        } , new Action1<Throwable>() {
+
+            @Override
+            public void call(Throwable throwable) {
+                onError((Exception) throwable);
+            }
+        });
     }
 
     @Override
@@ -152,10 +167,9 @@ public class TrackingCheckActivity extends ActionBarActivity implements Tracking
 
         progressBar.setVisibility(View.VISIBLE);
         webView.setVisibility(View.GONE);
-        trackingService.checkTracking(numer_przesylki, this);
+        trackingService.onNext(numer_przesylki);
     }
 
-    @Override
     public void onResult(String result) {
         progressBar.setVisibility(View.GONE);
         webView.setVisibility(View.VISIBLE);
@@ -164,7 +178,6 @@ public class TrackingCheckActivity extends ActionBarActivity implements Tracking
                                     ENCODING, null);
     }
 
-    @Override
     public void onError(Exception e) {
         progressBar.setVisibility(View.GONE);
         webView.setVisibility(View.VISIBLE);
