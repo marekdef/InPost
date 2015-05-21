@@ -17,6 +17,8 @@ public class JSoupParser {
 
     public static final String CURRENT_STATUS_IMPORTANT = "current-status important";
 
+    public static final String H3 = "h3";
+
     public String parse(String inpostPage) throws JSoupParserException {
         Document parse = Jsoup.parse(inpostPage, UTF_8_ENCODING);
 
@@ -25,7 +27,7 @@ public class JSoupParser {
         if (elementsByAttributeValue.size() > 0) {
             Element currentStatusImportant = elementsByAttributeValue.first();
 
-            Elements h3s = currentStatusImportant.getElementsByTag("h3");
+            Elements h3s = currentStatusImportant.getElementsByTag(H3);
 
             if(h3s.size() > 0) {
                 return h3s.first().html();
