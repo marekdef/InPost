@@ -7,4 +7,7 @@
     <string name="example"></string>
     <string name="timeout_exceeded">Przekroczono czas oczekiwania na odpowiedż serwera</string>
     <string name="hint">Wpisz lub zeskanuj numer paczki</string>
+    <string name="parse_error">Błąd parsowania</string>
+    <string name="http_status_error">Zły status http</string>
+    <string name="http_response_error">Błąd zapytania http</string>
 </resources>

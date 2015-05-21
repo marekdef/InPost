@@ -1,14 +1,13 @@
 package net.retsat1.starlab.inpost;
 
+import net.retsat1.starlab.inpost.exceptions.HttpBadStatusCodeException;
+import net.retsat1.starlab.inpost.exceptions.HttpRequestException;
+import net.retsat1.starlab.inpost.exceptions.JSoupParserException;
+
 import android.app.IntentService;
 import android.content.Context;
 import android.content.Intent;
-import android.os.Handler;
 import android.support.v4.content.LocalBroadcastManager;
-
-import net.retsat1.starlab.inpost.exceptions.HttpRequestException;
-import net.retsat1.starlab.inpost.exceptions.JSoupParserException;
-import net.retsat1.starlab.inpost.exceptions.TimeoutException;
 
 /**
  * An {@link IntentService} subclass for handling asynchronous task requests in
@@ -17,7 +16,8 @@ import net.retsat1.starlab.inpost.exceptions.TimeoutException;
 public class QueryService extends IntentService {
 
     public static final String RESULT = "result";
-    private static final long TIMEOUT = 10_000;
+
+
 
     private HttpQuery httpQuery = new HttpQuery();
 
@@ -25,11 +25,13 @@ public class QueryService extends IntentService {
 
     // IntentService can perform, e.g. ACTION_FETCH_NEW_ITEMS
     public static final String ACTION_QUERY = "net.retsat1.starlab.inpost.action.QUERY";
+
     public static final String ACTION_RESULT = "net.retsat1.starlab.inpost.action.RESULT";
+
     public static final String ACTION_FAILURE = "net.retsat1.starlab.inpost.action.FAILURE";
+
     public static final String ACTION_TIMEOUT = "net.retsat1.starlab.inpost.action.TIMEOUT";
 
-    // TODO: Rename parameters
     private static final String PARAM_TRACKING_NUMBER = "net.retsat1.starlab.inpost.param.TRACKING_NUMBER";
 
     /**
@@ -38,7 +40,6 @@ public class QueryService extends IntentService {
      *
      * @see IntentService
      */
-    // TODO: Customize helper method
     public static void startActionFoo(Context context, String param1) {
         Intent intent = new Intent(context, QueryService.class);
         intent.setAction(ACTION_QUERY);
@@ -59,7 +60,7 @@ public class QueryService extends IntentService {
         final String action = intent.getAction();
         if (ACTION_QUERY.equals(action)) {
             final String param1 = intent.getStringExtra(PARAM_TRACKING_NUMBER);
-            handleActionFoo(param1);
+            handleActionSendQuery(param1);
         }
     }
 
@@ -70,17 +71,6 @@ public class QueryService extends IntentService {
             return status;
         }
         final String action = intent.getAction();
-        if (ACTION_QUERY.equals(action)) {
-            Handler handler = new Handler();
-            handler.postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    Intent timeoutIntent = new Intent(ACTION_TIMEOUT);
-                    timeoutIntent.putExtra(RESULT, new TimeoutException());
-                    LocalBroadcastManager.getInstance(getApplicationContext()).sendBroadcast(timeoutIntent);
-                }
-            }, TIMEOUT);
-        }
         return status;
     }
 
@@ -88,20 +78,34 @@ public class QueryService extends IntentService {
      * Handle action Foo in the provided background thread with the provided
      * parameters.
      */
-    private void handleActionFoo(String numer_przesylki) {
+    private void handleActionSendQuery(String trackingNumber) {
         try {
-            String execute = httpQuery.execute(numer_przesylki);
+            String execute = httpQuery.execute(trackingNumber);
 
             String parse = htmlParser.parse(execute);
 
             Intent intent = new Intent(ACTION_RESULT);
-            intent.putExtra(RESULT, parse);
+            intent.putExtra(RESULT, new TrackingService.Result(trackingNumber, parse));
             LocalBroadcastManager.getInstance(this).sendBroadcast(intent);
         } catch (JSoupParserException | HttpRequestException e) {
             Intent intent = new Intent(ACTION_FAILURE);
-            intent.putExtra(RESULT, e);
+            intent.putExtra(RESULT, new TrackingService.Result(trackingNumber, getMessage(trackingNumber, e)));
             LocalBroadcastManager.getInstance(this).sendBroadcast(intent);
         }
+    }
+
+    private String getMessage(String trackingNumber, Exception e) {
+        final Class<? extends Exception> exceptionClass = e.getClass();
+        if (exceptionClass.equals(JSoupParserException.class)) {
+            return getString(R.string.parse_error);
+        }
+        if (exceptionClass.equals(HttpRequestException.class)) {
+            return getString(R.string.http_response_error);
+        }
+        if (exceptionClass.equals(HttpBadStatusCodeException.class)) {
+            return getString(R.string.http_status_error);
+        }
+        return "";
     }
 }
 

@@ -16,6 +16,7 @@ import org.apache.commons.io.IOUtils;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v7.app.ActionBarActivity;
 import android.text.Html;
 import android.text.TextUtils;
@@ -50,6 +51,9 @@ public class TrackingCheckActivity extends ActionBarActivity {
 
     public static final int FADE_DURATION = 3000;
 
+    public static final String WAS_HTML_INTRO_SHOWN = "was_html_intro_shown";
+
+
     @InjectView(R.id.editTextNumber)
     protected EditText editTextNumber;
 
@@ -67,6 +71,8 @@ public class TrackingCheckActivity extends ActionBarActivity {
 
     private Subscription subscription;
 
+    private boolean needDisplayHtmlIntroForThisSession = true;
+
     /**
      * Called when the activity is first created.
      */
@@ -81,11 +87,15 @@ public class TrackingCheckActivity extends ActionBarActivity {
         setContentView(R.layout.main);
 
         ButterKnife.inject(this);
+        getSupportActionBar().setLogo(R.drawable.ic_launcher);
+    }
 
-        try {
-            history.setText(Html.fromHtml(IOUtils.toString(getResources().openRawResource(R.raw.history))));
-        } catch (IOException ignore) {
-            Log.e(TAG, "Could not set history", ignore);
+    @Override
+    public void onPostCreate(Bundle savedInstanceState) {
+        super.onPostCreate(savedInstanceState);
+
+        if(needDisplayHtmlIntroForThisSession) {
+            displayHtmlIntro();
         }
     }
 
@@ -104,6 +114,22 @@ public class TrackingCheckActivity extends ActionBarActivity {
                 onError("TODO", (Exception) throwable);
             }
         });
+    }
+
+    @Override
+    protected void onRestoreInstanceState(@NonNull Bundle savedInstanceState) {
+        super.onRestoreInstanceState(savedInstanceState);
+
+        needDisplayHtmlIntroForThisSession = !savedInstanceState.getBoolean(WAS_HTML_INTRO_SHOWN, false);
+    }
+
+
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+
+        outState.putBoolean(WAS_HTML_INTRO_SHOWN, true);
     }
 
     @Override
@@ -132,6 +158,15 @@ public class TrackingCheckActivity extends ActionBarActivity {
         editTextNumber.setText("");
     }
 
+    private void displayHtmlIntro() {
+        try {
+            history.setText(Html.fromHtml(IOUtils.toString(getResources().openRawResource(R.raw.history))));
+
+        } catch (IOException ignore) {
+            Log.e(TAG, "Could not set history", ignore);
+        }
+    }
+
     public void onActivityResult(int requestCode, int resultCode, Intent intent) {
         IntentResult scanResult = IntentIntegrator.parseActivityResult(
                 requestCode, resultCode, intent);
@@ -151,7 +186,7 @@ public class TrackingCheckActivity extends ActionBarActivity {
         ViewPropertyAnimator.animate(scrollView).alpha(0.0f).translationYBy(50).setDuration(FADE_DURATION).setListener(animatorListener).start();
 
         progressBar.setVisibility(View.VISIBLE);
-        trackingService.onNext(numer_przesylki);
+        trackingService.sendQuery(numer_przesylki);
     }
 
     public void onResult(String trackingNumber, String trackingResult) {

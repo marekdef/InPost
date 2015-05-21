@@ -1,10 +1,13 @@
 package net.retsat1.starlab.inpost;
 
+import com.google.common.io.Closeables;
+
 import net.retsat1.starlab.inpost.exceptions.HttpBadStatusCodeException;
 import net.retsat1.starlab.inpost.exceptions.HttpRequestException;
 
 import org.apache.commons.io.IOUtils;
 
+import java.io.Closeable;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
@@ -16,11 +19,11 @@ public class HttpQuery {
 
     protected static final String TRACKING_URL = "https://inpost.pl/pl/pomoc/znajdz-przesylke?parcel=";
 
-    public String execute(final String numer_przesylki)
+    public String execute(final String trackingNumber)
             throws HttpRequestException {
         HttpsURLConnection connection = null;
         try {
-            URL url = new URL(TRACKING_URL + numer_przesylki);
+            URL url = new URL(TRACKING_URL + trackingNumber);
             HttpsURLConnection.setFollowRedirects(true);
             connection = (HttpsURLConnection) url.openConnection();
 
