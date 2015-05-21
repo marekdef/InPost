@@ -12,11 +12,11 @@ public interface TrackingService extends Observer<String>{
     public Observable<Result> getObservable();
 
     public static class Result implements Serializable{
-        public final String token;
+        public final String number;
         public final String result;
 
-        public Result(String token, String result) {
-            this.token = token;
+        public Result(String number, String result) {
+            this.number = number;
             this.result = result;
         }
     }

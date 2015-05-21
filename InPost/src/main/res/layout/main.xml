@@ -68,21 +68,19 @@
     </RelativeLayout>
 
 
-    <android.webkit.WebView
-        android:id="@+id/webView"
+    <LinearLayout
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/buttonContainer"
-        android:visibility="invisible">
-
-    </android.webkit.WebView>
+        android:orientation="vertical"
+        android:id="@+id/resultContainer"/>
 
 
     <ScrollView
         android:id="@+id/scrollView"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
-        android:layout_below="@id/webView"
+        android:layout_below="@id/resultContainer"
         android:layout_alignParentBottom="true"
         android:descendantFocusability="afterDescendants">
 
