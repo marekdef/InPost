@@ -27,6 +27,7 @@ import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.ScrollView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.io.IOException;
 
@@ -111,7 +112,7 @@ public class TrackingCheckActivity extends ActionBarActivity {
 
             @Override
             public void call(Throwable throwable) {
-                onError("TODO", (Exception) throwable);
+                onError("", (Exception) throwable);
             }
         });
     }
@@ -197,7 +198,7 @@ public class TrackingCheckActivity extends ActionBarActivity {
 
     public void onError(String trackingNumber, Exception e) {
         progressBar.setVisibility(View.GONE);
-        onResult(trackingNumber, e.getMessage());
+        Toast.makeText(this, e.getMessage(), Toast.LENGTH_LONG).show();
     }
 
     private class FadeNoClickAnimatorListener implements Animator.AnimatorListener {
