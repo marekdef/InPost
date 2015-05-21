@@ -1,7 +1,6 @@
 package net.retsat1.starlab.inpost.modules;
 
-import net.retsat1.starlab.inpost.TrackingCheckActivity;
-import net.retsat1.starlab.inpost.TrackingService;
+import net.retsat1.starlab.inpost.activities.TrackingCheckActivity;
 
 import javax.inject.Singleton;
 
