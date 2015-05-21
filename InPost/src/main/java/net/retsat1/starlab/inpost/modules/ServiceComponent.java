@@ -10,9 +10,8 @@ import dagger.Component;
 /**
  * Created by marekdef on 18.05.15.
  */
-@Component(modules = {ApplicationModule.class, ServiceModule.class})
+@Component(modules = {ApplicationModule.class})
 @Singleton
 public interface ServiceComponent {
-    TrackingService maker();
     void inject(TrackingCheckActivity trackingCheckActivity);
 }
