@@ -16,14 +16,10 @@ import net.retsat1.starlab.inpost.R;
  * create an instance of this fragment.
  */
 public class ResultFragment extends Fragment {
-
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String TRACKING_NUMBER = "trackingNumber";
 
     private static final String TRACKING_RESULT = "trackingResult";
 
-    // TODO: Rename and change types of parameters
     private String trackingNumber;
 
     private String trackingResult;
@@ -34,13 +30,12 @@ public class ResultFragment extends Fragment {
      * this fragment using the provided parameters.
      *
      * @param trackingNumber
-     *         Parameter 1.
+     *         Tracking Number
      * @param trackingResult
-     *         Parameter 2.
+     *         Tracking Result
      *
      * @return A new instance of fragment ResultFragment.
      */
-    // TODO: Rename and change types and number of parameters
     public static ResultFragment newInstance(String trackingNumber, String trackingResult) {
         ResultFragment fragment = new ResultFragment();
         Bundle args = new Bundle();
