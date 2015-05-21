@@ -136,33 +136,8 @@ public class TrackingCheckActivity extends ActionBarActivity {
         if(TextUtils.isEmpty(numer_przesylki))
             return;
 
-        ViewPropertyAnimator.animate(scrollView).alpha(0.0f).setDuration(3000).setListener(new Animator.AnimatorListener() {
-            @Override
-            public void onAnimationStart(Animator animation) {
-                scrollView.setOnTouchListener(new View.OnTouchListener() {
-                    @Override
-                    public boolean onTouch(View v, MotionEvent event) {
-                        return true;
-                    }
-                });
-
-            }
-
-            @Override
-            public void onAnimationEnd(Animator animation) {
-                scrollView.setVisibility(View.GONE);
-            }
-
-            @Override
-            public void onAnimationCancel(Animator animation) {
-
-            }
-
-            @Override
-            public void onAnimationRepeat(Animator animation) {
-
-            }
-        }).start();
+        final Animator.AnimatorListener animatorListener = new FadeNoClickAnimatorListener();
+        ViewPropertyAnimator.animate(scrollView).alpha(0.0f).setDuration(3000).setListener(animatorListener).start();
 
 
         progressBar.setVisibility(View.VISIBLE);
@@ -184,5 +159,34 @@ public class TrackingCheckActivity extends ActionBarActivity {
 
         webView.loadDataWithBaseURL(null, e.getMessage(), TEXT_PLAIN,
                 ENCODING, null);
+    }
+
+    private class FadeNoClickAnimatorListener implements Animator.AnimatorListener {
+
+        @Override
+        public void onAnimationStart(Animator animation) {
+            scrollView.setOnTouchListener(new View.OnTouchListener() {
+                @Override
+                public boolean onTouch(View v, MotionEvent event) {
+                    return true;
+                }
+            });
+
+        }
+
+        @Override
+        public void onAnimationEnd(Animator animation) {
+            scrollView.setVisibility(View.GONE);
+        }
+
+        @Override
+        public void onAnimationCancel(Animator animation) {
+
+        }
+
+        @Override
+        public void onAnimationRepeat(Animator animation) {
+
+        }
     }
 }
