@@ -17,8 +17,6 @@ public class QueryService extends IntentService {
 
     public static final String RESULT = "result";
 
-
-
     private HttpQuery httpQuery = new HttpQuery();
 
     private JSoupParser htmlParser = new JSoupParser();
@@ -89,23 +87,9 @@ public class QueryService extends IntentService {
             LocalBroadcastManager.getInstance(this).sendBroadcast(intent);
         } catch (JSoupParserException | HttpRequestException e) {
             Intent intent = new Intent(ACTION_FAILURE);
-            intent.putExtra(RESULT, new TrackingService.Result(trackingNumber, getMessage(trackingNumber, e)));
+            intent.putExtra(RESULT, new TrackingService.Error(trackingNumber, e));
             LocalBroadcastManager.getInstance(this).sendBroadcast(intent);
         }
-    }
-
-    private String getMessage(String trackingNumber, Exception e) {
-        final Class<? extends Exception> exceptionClass = e.getClass();
-        if (exceptionClass.equals(JSoupParserException.class)) {
-            return getString(R.string.parse_error);
-        }
-        if (exceptionClass.equals(HttpRequestException.class)) {
-            return getString(R.string.http_response_error);
-        }
-        if (exceptionClass.equals(HttpBadStatusCodeException.class)) {
-            return getString(R.string.http_status_error);
-        }
-        return "";
     }
 }
 

@@ -10,6 +10,10 @@ import com.nineoldandroids.view.ViewPropertyAnimator;
 import net.retsat1.starlab.inpost.InPostApplication;
 import net.retsat1.starlab.inpost.R;
 import net.retsat1.starlab.inpost.TrackingService;
+import net.retsat1.starlab.inpost.exceptions.HttpBadStatusCodeException;
+import net.retsat1.starlab.inpost.exceptions.HttpRequestException;
+import net.retsat1.starlab.inpost.exceptions.JSoupParserException;
+import net.retsat1.starlab.inpost.exceptions.TimeoutException;
 import net.retsat1.starlab.inpost.fragments.ResultFragment;
 
 import org.apache.commons.io.IOUtils;
@@ -23,11 +27,7 @@ import android.text.TextUtils;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
-import android.widget.EditText;
-import android.widget.ProgressBar;
-import android.widget.ScrollView;
-import android.widget.TextView;
-import android.widget.Toast;
+import android.widget.*;
 
 import java.io.IOException;
 
@@ -39,6 +39,8 @@ import butterknife.OnClick;
 import io.fabric.sdk.android.Fabric;
 import rx.Subscription;
 import rx.functions.Action1;
+
+import static rx.android.schedulers.AndroidSchedulers.mainThread;
 
 public class TrackingCheckActivity extends ActionBarActivity {
 
@@ -54,6 +56,10 @@ public class TrackingCheckActivity extends ActionBarActivity {
 
     public static final String WAS_HTML_INTRO_SHOWN = "was_html_intro_shown";
 
+    public static final int TRANSLATE_BY = 50;
+
+    public static final float FULLY_TRANSPARENT = 0.0f;
+
 
     @InjectView(R.id.editTextNumber)
     protected EditText editTextNumber;
@@ -67,10 +73,21 @@ public class TrackingCheckActivity extends ActionBarActivity {
     @InjectView(R.id.scrollView)
     protected ScrollView scrollView;
 
+    @InjectView(R.id.buttonFind)
+    protected Button buttonFind;
+
+    @InjectView(R.id.buttonScan)
+    protected Button buttonScan;
+
+    @InjectView(R.id.buttonClear)
+    protected Button buttonClear;
+
+
     @Inject
     protected TrackingService trackingService;
 
-    private Subscription subscription;
+    private Subscription mResultSubscription;
+    private Subscription mErrorSubscription;
 
     private boolean needDisplayHtmlIntroForThisSession = true;
 
@@ -103,16 +120,17 @@ public class TrackingCheckActivity extends ActionBarActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        subscription = trackingService.getObservable().subscribe(new Action1<TrackingService.Result>() {
+        mResultSubscription = trackingService.getResultStream().subscribeOn(mainThread()).subscribe(new Action1<TrackingService.Result>() {
             @Override
             public void call(TrackingService.Result result) {
                 onResult(result.number, result.result);
             }
-        }, new Action1<Throwable>() {
+        });
 
+        mErrorSubscription = trackingService.getErrorStream().subscribeOn(mainThread()).subscribe(new Action1<TrackingService.Error>() {
             @Override
-            public void call(Throwable throwable) {
-                onError("", (Exception) throwable);
+            public void call(TrackingService.Error error) {
+                onError(error.number, error.throwable);
             }
         });
     }
@@ -136,7 +154,7 @@ public class TrackingCheckActivity extends ActionBarActivity {
     @Override
     protected void onPause() {
         super.onPause();
-        subscription.unsubscribe();
+        mResultSubscription.unsubscribe();
     }
 
     @OnClick(R.id.buttonFind)
@@ -184,21 +202,47 @@ public class TrackingCheckActivity extends ActionBarActivity {
         }
 
         final Animator.AnimatorListener animatorListener = new FadeNoClickAnimatorListener();
-        ViewPropertyAnimator.animate(scrollView).alpha(0.0f).translationYBy(50).setDuration(FADE_DURATION).setListener(animatorListener).start();
+        ViewPropertyAnimator.animate(scrollView).alpha(FULLY_TRANSPARENT).translationYBy(TRANSLATE_BY).setDuration(FADE_DURATION).setListener(animatorListener).start();
 
-        progressBar.setVisibility(View.VISIBLE);
+        toggleInputReady(false);
         trackingService.sendQuery(numer_przesylki);
     }
 
     public void onResult(String trackingNumber, String trackingResult) {
-        progressBar.setVisibility(View.GONE);
+        toggleInputReady(true);
 
         getSupportFragmentManager().beginTransaction().add(R.id.resultContainer, ResultFragment.newInstance(trackingNumber, trackingResult)).commit();
     }
 
     public void onError(String trackingNumber, Exception e) {
-        progressBar.setVisibility(View.GONE);
-        Toast.makeText(this, e.getMessage(), Toast.LENGTH_LONG).show();
+        toggleInputReady(true);
+
+        Toast.makeText(this, getMessage(e), Toast.LENGTH_LONG).show();
+    }
+
+    private void toggleInputReady(boolean enabled) {
+        progressBar.setVisibility(enabled ? View.GONE : View.VISIBLE);
+        buttonFind.setEnabled(enabled);
+        buttonScan.setEnabled(enabled);
+        buttonClear.setEnabled(enabled);
+        editTextNumber.setEnabled(enabled);
+    }
+
+    private String getMessage(Exception e) {
+        final Class<? extends Exception> exceptionClass = e.getClass();
+        if (exceptionClass.equals(JSoupParserException.class)) {
+            return getString(R.string.parse_error);
+        }
+        if (exceptionClass.equals(HttpRequestException.class)) {
+            return getString(R.string.http_response_error);
+        }
+        if (exceptionClass.equals(HttpBadStatusCodeException.class)) {
+            return getString(R.string.http_status_error);
+        }
+        if (exceptionClass.equals(TimeoutException.class)) {
+            return getString(R.string.http_response_timeout);
+        }
+        return "";
     }
 
     private class FadeNoClickAnimatorListener implements Animator.AnimatorListener {
