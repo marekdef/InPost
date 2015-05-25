@@ -73,7 +73,7 @@ public class ServiceBacked implements TrackingService {
             @Override
             public void onReceive(Context context, Intent intent) {
                 final String action = intent.getAction();
-                if (ACTION_RESULT.equals(action) || ACTION_FAILURE.equals(action)) {
+                if (ACTION_RESULT.equals(action)) {
                     final TrackingService.Result result = (TrackingService.Result) intent.getSerializableExtra
                             (RESULT);
 
