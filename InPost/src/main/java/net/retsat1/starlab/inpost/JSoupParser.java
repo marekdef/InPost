@@ -15,6 +15,8 @@ public class JSoupParser {
 
     public static final String SYSTEM_ERROR_CLASS = "system-error";
 
+    public static final String OTHER_STATUS_CLASS = "other-status";
+
     public static final String CURRENT_STATUS_IMPORTANT = "current-status important";
 
     public static final String H3 = "h3";
@@ -40,6 +42,15 @@ public class JSoupParser {
             Element systemError = elementsByAttributeValue.first();
             return systemError.child(0).html();
         }
+
+        elementsByAttributeValue = parse.getElementsByClass(OTHER_STATUS_CLASS);
+        if (elementsByAttributeValue.size() > 0) {
+            Element otherStatus = elementsByAttributeValue.first();
+            Elements tds = otherStatus.getElementsByTag("td");
+            if(tds.size() > 2)
+                return tds.get(2).html();
+        }
+
 
         throw new JSoupParserException();
     }
