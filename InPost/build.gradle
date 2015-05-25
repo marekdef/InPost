@@ -34,7 +34,7 @@ android {
         applicationId "pl.lodz.atp.inpost"
         minSdkVersion 9
         targetSdkVersion 21
-        versionCode 2
+        versionCode 3
         versionName "2.0.1" + "-" + getVersionName()
     }
 
