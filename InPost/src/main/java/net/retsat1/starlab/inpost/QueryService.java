@@ -1,13 +1,12 @@
 package net.retsat1.starlab.inpost;
 
-import net.retsat1.starlab.inpost.exceptions.HttpBadStatusCodeException;
-import net.retsat1.starlab.inpost.exceptions.HttpRequestException;
-import net.retsat1.starlab.inpost.exceptions.JSoupParserException;
-
 import android.app.IntentService;
 import android.content.Context;
 import android.content.Intent;
 import android.support.v4.content.LocalBroadcastManager;
+
+import net.retsat1.starlab.inpost.exceptions.HttpRequestException;
+import net.retsat1.starlab.inpost.exceptions.JSoupParserException;
 
 /**
  * An {@link IntentService} subclass for handling asynchronous task requests in
@@ -15,13 +14,14 @@ import android.support.v4.content.LocalBroadcastManager;
  */
 public class QueryService extends IntentService {
 
-    public static final String RESULT = "result";
+    public static final String SUCCESS_RESULT = "result";
+
+    public static final String FAILURE_RESULT = "error";
 
     private HttpQuery httpQuery = new HttpQuery();
 
     private JSoupParser htmlParser = new JSoupParser();
 
-    // IntentService can perform, e.g. ACTION_FETCH_NEW_ITEMS
     public static final String ACTION_QUERY = "net.retsat1.starlab.inpost.action.QUERY";
 
     public static final String ACTION_RESULT = "net.retsat1.starlab.inpost.action.RESULT";
@@ -68,7 +68,6 @@ public class QueryService extends IntentService {
         if (intent == null) {
             return status;
         }
-        final String action = intent.getAction();
         return status;
     }
 
@@ -83,11 +82,11 @@ public class QueryService extends IntentService {
             String parse = htmlParser.parse(execute);
 
             Intent intent = new Intent(ACTION_RESULT);
-            intent.putExtra(RESULT, new TrackingService.Result(trackingNumber, parse));
+            intent.putExtra(SUCCESS_RESULT, new TrackingService.Result(trackingNumber, parse));
             LocalBroadcastManager.getInstance(this).sendBroadcast(intent);
         } catch (JSoupParserException | HttpRequestException e) {
             Intent intent = new Intent(ACTION_FAILURE);
-            intent.putExtra(RESULT, new TrackingService.Error(trackingNumber, e));
+            intent.putExtra(FAILURE_RESULT, new TrackingService.Error(trackingNumber, e));
             LocalBroadcastManager.getInstance(this).sendBroadcast(intent);
         }
     }

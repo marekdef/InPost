@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">InPost Tracker</string>
+    <string name="find">Find</string>
+    <string name="scan">Scan</string>
+    <string name="clean">Clear</string>
+    <string name="timeout_exceeded">Timeout contacting server</string>
+    <string name="hint">Enter or scan tracking number</string>
+    <string name="parse_error">Error parsing page response</string>
+    <string name="http_status_error">Bad http status: %s</string>
+    <string name="http_response_error">Bad http response: %s</string>
+    <string name="http_response_timeout">Response timeout</string>
+</resources>

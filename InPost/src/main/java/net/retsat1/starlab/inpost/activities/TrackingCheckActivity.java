@@ -1,9 +1,24 @@
 package net.retsat1.starlab.inpost.activities;
 
-import com.google.zxing.integration.android.IntentIntegrator;
-import com.google.zxing.integration.android.IntentResult;
+import android.content.Intent;
+import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.v7.app.ActionBarActivity;
+import android.text.Html;
+import android.text.TextUtils;
+import android.util.Log;
+import android.view.MotionEvent;
+import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.ProgressBar;
+import android.widget.ScrollView;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import com.crashlytics.android.Crashlytics;
+import com.google.zxing.integration.android.IntentIntegrator;
+import com.google.zxing.integration.android.IntentResult;
 import com.nineoldandroids.animation.Animator;
 import com.nineoldandroids.view.ViewPropertyAnimator;
 
@@ -17,17 +32,6 @@ import net.retsat1.starlab.inpost.exceptions.TimeoutException;
 import net.retsat1.starlab.inpost.fragments.ResultFragment;
 
 import org.apache.commons.io.IOUtils;
-
-import android.content.Intent;
-import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.v7.app.ActionBarActivity;
-import android.text.Html;
-import android.text.TextUtils;
-import android.util.Log;
-import android.view.MotionEvent;
-import android.view.View;
-import android.widget.*;
 
 import java.io.IOException;
 
@@ -233,16 +237,26 @@ public class TrackingCheckActivity extends ActionBarActivity {
         if (exceptionClass.equals(JSoupParserException.class)) {
             return getString(R.string.parse_error);
         }
-        if (exceptionClass.equals(HttpRequestException.class)) {
-            return getString(R.string.http_response_error);
-        }
         if (exceptionClass.equals(HttpBadStatusCodeException.class)) {
-            return getString(R.string.http_status_error);
+            return getString(R.string.http_status_error, getSafeCause(e));
+        }
+        if (exceptionClass.equals(HttpRequestException.class)) {
+            return getString(R.string.http_response_error, getSafeCause(e));
         }
         if (exceptionClass.equals(TimeoutException.class)) {
             return getString(R.string.http_response_timeout);
         }
         return "";
+    }
+
+    private Object getSafeCause(Exception e) {
+        Throwable cause = e.getCause();
+        if(cause == null)
+            return "";
+        String localizedMessage = e.getCause().getLocalizedMessage();
+        if(localizedMessage == null)
+            return "";
+        return localizedMessage;
     }
 
     private class FadeNoClickAnimatorListener implements Animator.AnimatorListener {

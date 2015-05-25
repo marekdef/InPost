@@ -1,8 +1,5 @@
 package net.retsat1.starlab.inpost;
 
-import net.retsat1.starlab.inpost.TrackingService.*;
-import net.retsat1.starlab.inpost.exceptions.TimeoutException;
-
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -11,14 +8,18 @@ import android.content.SharedPreferences;
 import android.os.Handler;
 import android.support.v4.content.LocalBroadcastManager;
 
+import net.retsat1.starlab.inpost.exceptions.TimeoutException;
+
 import rx.Observable;
+import rx.subjects.BehaviorSubject;
 import rx.subjects.PublishSubject;
 import rx.subjects.Subject;
 
 import static net.retsat1.starlab.inpost.QueryService.ACTION_FAILURE;
 import static net.retsat1.starlab.inpost.QueryService.ACTION_RESULT;
 import static net.retsat1.starlab.inpost.QueryService.ACTION_TIMEOUT;
-import static net.retsat1.starlab.inpost.QueryService.RESULT;
+import static net.retsat1.starlab.inpost.QueryService.FAILURE_RESULT;
+import static net.retsat1.starlab.inpost.QueryService.SUCCESS_RESULT;
 
 /**
  * Created by marekdef on 20.04.15.
@@ -41,7 +42,7 @@ public class ServiceBacked implements TrackingService {
 
     private Subject resultsStream = PublishSubject.<Result>create();
 
-    private Subject errorsStream = PublishSubject.<Error>create();
+    private Subject errorsStream = BehaviorSubject.<Error>create();
 
     public ServiceBacked(Context applicationContext) {
         this.context = applicationContext.getApplicationContext();
@@ -61,9 +62,6 @@ public class ServiceBacked implements TrackingService {
     }
 
     public void sendQuery(final String trackingNumber) {
-
-
-
         IntentFilter filter = new IntentFilter();
         filter.addAction(ACTION_RESULT);
         filter.addAction(ACTION_FAILURE);
@@ -75,13 +73,13 @@ public class ServiceBacked implements TrackingService {
                 final String action = intent.getAction();
                 if (ACTION_RESULT.equals(action)) {
                     final TrackingService.Result result = (TrackingService.Result) intent.getSerializableExtra
-                            (RESULT);
+                            (SUCCESS_RESULT);
 
                     resultsStream.onNext(result);
                     saveResult(result);
                 } else if (ACTION_TIMEOUT.equals(action) || ACTION_FAILURE.equals(action)) {
                     final Error error = (Error) intent.getSerializableExtra
-                            (RESULT);
+                            (FAILURE_RESULT);
                     errorsStream.onNext(error);
                     return;//skip unregistering for timeout we still might get an answer
                 }
@@ -96,7 +94,7 @@ public class ServiceBacked implements TrackingService {
             @Override
             public void run() {
                 Intent timeoutIntent = new Intent(ACTION_TIMEOUT);
-                timeoutIntent.putExtra(RESULT, new TrackingService.Error(trackingNumber, new TimeoutException()));
+                timeoutIntent.putExtra(FAILURE_RESULT, new TrackingService.Error(trackingNumber, new TimeoutException()));
                 LocalBroadcastManager.getInstance(ServiceBacked.this.context).sendBroadcast(timeoutIntent);
             }
         }, TIMEOUT);
