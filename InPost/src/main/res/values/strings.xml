@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
     <string name="app_name">InPost Tracker</string>
     <string name="find">Znajdź</string>
     <string name="scan">Skanuj</string>
     <string name="clean">Wyczyść</string>
-    <string name="example"></string>
+    <string name="example" tools:ignore="MissingTranslation"></string>
     <string name="timeout_exceeded">Przekroczono czas oczekiwania na odpowiedż serwera</string>
     <string name="hint">Wpisz lub zeskanuj numer paczki</string>
     <string name="parse_error">Błąd parsowania odpowiedzi</string>
